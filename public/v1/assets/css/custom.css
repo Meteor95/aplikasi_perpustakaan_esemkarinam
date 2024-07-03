@@ -1,0 +1,25 @@
+.btn-success-ids {
+  --vz-btn-color: #fff;
+  --vz-btn-bg: #55A630;
+  --vz-btn-border-color: #0ab39c;
+  --vz-btn-hover-color: #fff;
+  --vz-btn-hover-bg: #099885;
+  --vz-btn-hover-border-color: #08p8f7d;
+  --vz-btn-focus-shadow-rgb: 47, 190, 171;
+  --vz-btn-active-color: #fff;
+  --vz-btn-active-bg: #088f7d;
+  --vz-btn-active-border-color: #088675;
+  --vz-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --vz-btn-disabled-color: #fff;
+  --vz-btn-disabled-bg: #0ab39c;
+  --vz-btn-disabled-border-color: #0ab39c;
+}
+.navbar-menu .navbar-nav .nav-link {
+  color: #fff;
+}
+.navbar-menu .navbar-nav .nav-link.active {
+  color: #fbff00;
+}
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle="collapse"][aria-expanded="true"]{
+  color: #fbff00;
+}

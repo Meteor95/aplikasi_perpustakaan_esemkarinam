@@ -1,0 +1,9 @@
+@extends('templatebody')
+@section('konten_utama')
+@include('includes.header')
+@include('includes.sidebarmenu')
+@endsection
+@section('css_load')
+@endsection
+@section('js_load')
+@endsection
