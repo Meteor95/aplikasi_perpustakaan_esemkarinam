@@ -8,7 +8,6 @@ $(function() {
     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 });
 function loaddatatables(){
-    let tabeldetail = new DataTable('#tabeldetail');
     $.get('/generate-csrf-token', function(response) {
          let daftar_peminjaman = $("#daftar_peminjaman").DataTable({
             language:{
