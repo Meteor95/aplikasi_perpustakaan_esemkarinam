@@ -54,9 +54,19 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link {{($data['menu_utama_aktif'] == "master_pembayaran" ? "active" : "" )}}" href="{{url('/daftarpembayaran')}}">
-                        <i class="bx bxs-report"></i> <span data-key="t-widgets">Transaksi Peminjaman</span>
+                    <a class="nav-link menu-link" href="#sidebarTablesPerpusPinjam" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesPerpusPinjam">
+                        <i class="bx bxs-report"></i> <span data-key="t-widgets">Master Peminjaman</span>
                     </a>
+                    <div class="collapse menu-dropdown {{($data['menu_utama_aktif'] == "master_peminjaman" ? "active" : "" )}} {{($data['menu_utama_aktif'] === "master_peminjaman" ? "show" : "" )}}" id="sidebarTablesPerpusPinjam">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{url('/perpustakaan/daftar_peminjaman')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_pinjam" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pinjaman</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{url('/perpustakaan/tambah_pengembalian_buku')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_kembali" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pengembalian</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTablesha" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesha">

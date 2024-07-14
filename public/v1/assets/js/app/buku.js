@@ -321,13 +321,13 @@ function detailbuku(id_buku,jenis){
                     let select_kategori_form = new Option(response.data.nama_kategori, response.data.id_kategori, true, false);
                     $('#select_kategori_form').append(select_kategori_form).trigger('change');
                     $("#select_kategori_form").val(response.data.id_kategori).trigger('change');
-                    let select_pengarang_form = new Option(response.data.nama_pengarang, response.data.id_hakakses, true, false);
+                    let select_pengarang_form = new Option(response.data.nama_pengarang, response.data.id_pengarang, true, false);
                     $('#select_pengarang_form').append(select_pengarang_form).trigger('change');
-                    $("#select_pengarang_form").val(response.data.id_hakakses).trigger('change');
-                    let select_rak_form = new Option(response.data.nama_rak, response.data.id_hakakses, true, false);
+                    $("#select_pengarang_form").val(response.data.id_pengarang).trigger('change');
+                    let select_rak_form = new Option(response.data.nama_rak, response.data.id_rak, true, false);
                     $('#select_rak_form').append(select_rak_form).trigger('change');
-                    $("#select_rak_form").val(response.data.id_hakakses).trigger('change');
-                    let select_laci_form = new Option(response.data.nama_laci, response.data.id_hakakses, true, false);
+                    $("#select_rak_form").val(response.data.id_rak).trigger('change');
+                    let select_laci_form = new Option(response.data.nama_laci, response.data.id_laci, true, false);
                     $('#select_laci_form').append(select_laci_form).trigger('change');
                     $("#select_laci_form").val(response.data.id_hakakses).trigger('change');
                     let select_penerbit_form = new Option(response.data.nama_penerbit, response.data.id_penerbit, true, false);

@@ -32,7 +32,9 @@ class Murid extends Model
             ->join('tms_ajaran_tahun', 'users_siswa.id_tahun_ajaran', '=', 'tms_ajaran_tahun.id')
             ->join('users_hakakses', 'users.id_hakakses', '=', 'users_hakakses.id');
         if ($detail) {
-            $query->where('users.id', '=', $parameterpencarian);
+            $query->where('users.id', '=', $parameterpencarian)
+            ->orWhere('users_siswa.nisn', '=', $parameterpencarian)
+            ->orWhere('users_siswa.nis', '=', $parameterpencarian);
         }else{
             $query->where(function($query) use ($parameterpencarian) {
                 $query->where('users_siswa.nama_lengkap', 'like', '%' . $parameterpencarian . '%')

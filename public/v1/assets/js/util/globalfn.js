@@ -26,4 +26,10 @@ function formatRupiah(angka, prefix) {
     } 
     rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
     return prefix == undefined ? rupiah : rupiah ? prefix + rupiah : "";
-  }
+}
+function formatDateddmmyyyhhiiss(dateString) {
+     let [datePart, timePart] = dateString.split(' ');
+     let [yyyy, mm, dd] = datePart.split('-');
+     let [hh, ii, ss] = timePart.split(':');
+     return `${dd}-${mm}-${yyyy} ${hh}:${ii}:${ss}`;
+}

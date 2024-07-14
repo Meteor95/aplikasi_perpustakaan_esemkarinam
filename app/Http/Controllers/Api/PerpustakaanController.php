@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use App\Models\{Penerbit,Pengarang,Kategori,Laci,Rak,Buku};
+use App\Models\{Penerbit,Pengarang,Kategori,Laci,Rak,Buku,Transaksi};
 use App\Helpers\ResponseHelper;
+use App\Services\TransaksiService;
 
 class PerpustakaanController extends Controller
 {
@@ -119,6 +120,11 @@ class PerpustakaanController extends Controller
             if (filter_var($req->detailbuku, FILTER_VALIDATE_BOOLEAN)){
                 $buku = Buku::detailOneBookDetail($req->id_buku);
                 $dynamicAttributes = [ 'data' => $buku];
+                if (empty($buku)) {
+                    return ResponseHelper::data_not_found(__('Informasi data tidak ditemukan. Silahkan cek lagi parameter pencarian'));
+                } else {
+                    return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Buku ']), $dynamicAttributes);
+                }
             }else{
                 $nomorHalaman = (int) $req->start / (int)($req->length == 0 ? 1 : $req->length );
                 $perHalaman = (int) $req->length;
@@ -133,8 +139,8 @@ class PerpustakaanController extends Controller
                         'offset' => $offset,
                     ],
                 ];
+                return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Buku ']), $dynamicAttributes);
             }
-            return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Buku ']), $dynamicAttributes);
         } catch (\Throwable $th) {
             return ResponseHelper::error($th);
         }
@@ -192,6 +198,57 @@ class PerpustakaanController extends Controller
                 'id_penerima' => $req->input('id_penerima'),
             ]);
             return ResponseHelper::success(__('common.saving_data_ok', ['proses' => __('auth.ino_prosess_saving')]), []);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        }
+    }
+    public function save_rent_of_books(TransaksiService $transaksiservices,Request $req){
+        try {
+            $data = $req->all();
+            $validator = Validator::make($data, [
+                'data_buku' => 'required',
+            ]);
+            if ($validator->fails()) {
+                $dynamicAttributes = ['errors' => $validator->errors()];
+                return ResponseHelper::error_validation(__('auth.ino_required_data'), $dynamicAttributes);
+            }
+            $databuku = json_encode($req->input('data_buku'));
+            $transaksiservices->addTransaksiPeminjamanBuku($databuku,$data);
+            return ResponseHelper::success(__('common.saving_data_ok', ['proses' => __('auth.ino_prosess_saving')]), []);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        }
+    }
+    public function listloanofbook(Request $req){
+        try {
+            $nomorHalaman = (int) $req->start / (int)($req->length == 0 ? 1 : $req->length );
+            $perHalaman = (int) $req->length;
+            $offset = $nomorHalaman * $perHalaman; 
+            $peminjam = Transaksi::getBukuWithPeminjaman($req, $perHalaman, $offset);
+            $jumlahdata =  Transaksi::getTotalBukuWithPeminjaman($req)->count();
+            $dynamicAttributes = [
+                'data' => $peminjam,
+                'recordsFiltered' => $jumlahdata,
+                'pages' => [
+                    'limit' => $perHalaman,
+                    'offset' => $offset,
+                ],
+            ];
+            return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Buku ']), $dynamicAttributes);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        }
+    }
+    public function detailrentofbook(Request $req){
+        try {
+            $nomorHalaman = (int) $req->start / (int)($req->length == 0 ? 1 : $req->length );
+            $perHalaman = (int) $req->length;
+            $offset = $nomorHalaman * $perHalaman; 
+            $peminjam = Transaksi::getBukuWithPeminjamanDetail($req, $perHalaman, $offset);
+            $dynamicAttributes = [
+                'data' => $peminjam,
+            ];
+            return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Peminjam ']), $dynamicAttributes);
         } catch (\Throwable $th) {
             return ResponseHelper::error($th);
         }

@@ -12,7 +12,7 @@
 <script src="{{ asset('v1/assets/js/app.js')}}"></script>
 @endif
 <script>
-    var baseurlapi = "{{ url(env('APP_VERSI_API')) }}";
+    var baseurlapi = "{{ url('/api/v1') }}";
     var baseurl = "{{ url('') }}";
-    var id_user_login = "{{isset($data['userInfo']->id) ? $data['userInfo']->id : '0';}}"
+    var id_user_login = "{{ isset($data['userInfo']->id) ? $data['userInfo']->id : '0' }}";
 </script>

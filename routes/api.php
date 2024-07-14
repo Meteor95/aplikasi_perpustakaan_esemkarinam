@@ -25,6 +25,9 @@ Route::prefix('v1')->group(function () {
             Route::get('bacaatribut', [PerpustakaanController::class,"loadatribut"]);
             Route::get('daftar_buku', [PerpustakaanController::class,"listofbook"]); 
             Route::post('tambah_buku', [PerpustakaanController::class,"insertofbook"]); 
+            Route::post('proses_peminjaman', [PerpustakaanController::class,"save_rent_of_books"]);
+            Route::get('daftar_peminjam', [PerpustakaanController::class,"listloanofbook"]); 
+            Route::get('detail_pinjaman', [PerpustakaanController::class,"detailrentofbook"]); 
         });
         Route::prefix('pegawai')->group(function () {
             Route::post('pendaftaran', [PegawaiController::class, "addemployed"]);

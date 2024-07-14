@@ -12,6 +12,8 @@ Route::middleware([VerifyIsLogin::class])->group(function () {
     Route::get('beranda', [StudentsController::class,"dashboard"])->name('beranda');
     Route::prefix('perpustakaan')->group(function () {
         Route::get('daftar_buku', [PerpustakaanController::class,"list_of_book"]);
+        Route::get('daftar_peminjaman', [PerpustakaanController::class,"list_of_rent"]);
+        Route::get('tambah_pinjaman_buku', [PerpustakaanController::class,"tambah_pinjaman"]);
         Route::get('atribut', [PerpustakaanController::class,"atribut"]);
         Route::get('pengaturan', [PerpustakaanController::class,"setting"]);
     });

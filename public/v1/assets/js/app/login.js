@@ -45,7 +45,7 @@ $('#togglePassword').click(function() {
 });
 $("#kirim_perimintaan_atur_ulang_sandi" ).on( "click", function() {
     if ($("#email_terkait").val() == "") return toastr.error('Bidang atribut surel dibutuhkan untuk melakukan atur ulang kata sandi');
-    if (!isEmail($("#email_terkait").val())) return toastr.error('Format surel dibutuhkan. EX: inodreamstudio@gmai.com');
+    if (!isEmail($("#email_terkait").val())) return toastr.error('Format surel dibutuhkan. EX: sandyidriszufikar@gmai.com');
     $('#kirim_perimintaan_atur_ulang_sandi').prop("disabled",true);$('#kirim_perimintaan_atur_ulang_sandi').html('<i class="mdi mdi-spin mdi-cog-outline fs-15"></i> Mengirim Surel');
     $.get('/generate-csrf-token', function(response) {
         $.ajax({

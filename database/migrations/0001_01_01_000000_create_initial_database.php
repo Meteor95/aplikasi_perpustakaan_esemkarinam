@@ -154,6 +154,22 @@ return new class extends Migration
             $table->string('keterangan');
             $table->timestamps();
         });
+        Schema::create('tms_transaksi_buku', function (Blueprint $table) {
+            $table->integer('id_transaksi')->primary()->index();
+            $table->string('nomor_transkasi');
+            $table->string('id_anggota');
+            $table->datetime('tanggal_peminjaman')->nullable();
+            $table->datetime('tanggal_pengembalian')->nullable();
+            $table->enum('status', ['dipinjam', 'dikembalikan']);
+        });
+        Schema::create('tms_transaksi_buku_detail', function (Blueprint $table) {
+            $table->integer('id_transaksi_detail')->primary()->index();
+            $table->string('id_transaksi');
+            $table->string('id_buku');
+            $table->integer('qty_pinjam');
+            $table->double('denda', 15, 2);
+            $table->string('keterangan');
+        });
     }
 
     /**

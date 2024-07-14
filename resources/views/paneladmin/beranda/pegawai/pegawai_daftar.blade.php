@@ -59,7 +59,7 @@
                                 <label for="username" class="form-label">Nama Pengguna</label>
                             </div>
                             <div class="col-lg-9">
-                                <input required type="text" class="form-control" id="username" placeholder="Ketikan username / nama pengguna ex: inodreamstudio">
+                                <input required type="text" class="form-control" id="username" placeholder="Ketikan username / nama pengguna ex: sandiidriz">
                             </div>
                         </div>
                         <div class="row mb-1">
