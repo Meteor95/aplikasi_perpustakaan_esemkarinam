@@ -135,7 +135,8 @@ function detailinformasi(nomornota){
                 $('#kelas').html(response.data[0].nama_kelas)
                 $('#tahun_ajaran').html(response.data[0].keterangan_tahun_ajaran)
                 let totalbaris = 0;
-                $('#tabeldetail').clear().draw();
+                let currentClasses = $('#tabeldetail').attr('class');
+                $('#tabeldetail').find('tbody').empty();
                 $.each(response.data, function(index, item) {
                     totalbaris = totalbaris + 1;
                     let row = '<tr>' +
@@ -144,9 +145,10 @@ function detailinformasi(nomornota){
                                 '<td>' + item.qty_pinjam + ' Buku</td>' +
                                 '<td>' + item.denda + '</td>' +
                              '</tr>';
-                    $('#tabeldetail').append(row);
+                    $('#tabeldetail').find('tbody').append(row);
                 });
                 $('#totaljenisbuku').html(totalbaris)
+                $('#tabeldetail').attr('class', currentClasses);
                 $('#tabeldetail').addClass('table table-bordered dt-responsive nowrap table-striped align-middle');
                 $('#informasi_detail_peminjaman').modal('toggle');
             },

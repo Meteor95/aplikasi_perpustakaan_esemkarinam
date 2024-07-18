@@ -143,9 +143,9 @@
             </div>
             <div class="modal-footer">
                 <div class="d-flex justify-content-between gap-2">
-                    <button id="hapus_pengguna" class="btn btn-outline-danger"><i class="ri-delete-bin-5-line"></i> Hapus Pengguna</button>
+                    <!--<button id="hapus_pengguna" class="btn btn-outline-danger"><i class="ri-delete-bin-5-line"></i> Hapus Pengguna</button>
                     <button class="btn btn-outline-primary"><i class="ri-book-mark-line"></i> Non Aktifkan Pengguna</button>
-                    <button class="btn btn-outline-success"><i class="ri-book-3-fill"></i> Buka Pemberkasan</button>
+                    <button class="btn btn-outline-success"><i class="ri-book-3-fill"></i> Buka Pemberkasan</button>-->
                 </div>
             </div>
 
