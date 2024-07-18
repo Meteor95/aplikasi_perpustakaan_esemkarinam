@@ -34,7 +34,7 @@
                         <div class="p-2 mt-4">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Nama Pengguna</label>
-                                <input value="erayadigital" type="text" class="form-control" id="username" placeholder="Masukan nama pengguna terdaftar">
+                                <input value="sandyidriszulfikar" type="text" class="form-control" id="username" placeholder="Masukan nama pengguna terdaftar">
                             </div>
 
                             <div class="mb-3">
