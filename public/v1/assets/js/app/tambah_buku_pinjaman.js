@@ -4,28 +4,13 @@ $(function() {
         dom: 't',
         ordering: false
     });
-    $("#html5-qrcode-button-camera-start, #html5-qrcode-button-camera-end, #html5-qrcode-button-camera-permission").addClass("btn btn-outline-success");
-    let html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader",
-        { fps: 24, qrbox: { width: 512, height: 512 } },
-    );
-    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     $("#tanggal_trx").datepicker({
         todayHighlight: true,
         format:'dd-mm-yyyy',
         orientation: "bottom left",
         uiLibrary: 'bootstrap5',
-    });
-});
-function onScanSuccess(decodedText, decodedResult) {
-    console.log(`Code matched = ${decodedText}`, decodedResult);
-    html5QrcodeScanner.clear();
-}
-function onScanFailure(error) {
-    console.warn(`Code scan error = ${error}`);
-}
-$("#btn_aktifkan_camera").on( "click", function() {
-    $('#scan_qrcode').modal('toggle');
+    })
+    $('#tanggal_trx').val(moment().format('DD-MM-YYYY'));
 });
 function prosestambahkeranjang(){
     if ($("#kode_buku").val() == ""){
@@ -71,10 +56,17 @@ function prosestambahkeranjang(){
                         "Lokasi Laci : " + response.data.nama_laci + "<br>" +
                         "Lokasi Rak : " + response.data.nama_rak,
                         response.data.nama_kategori,
-                        "<input name=\"bonusitem[]\" class=\"qty form-control\" type=\"text\" value=\"1\">",
+                        "<input name=\"bonusitem[]\" class=\"qty hanyaangka form-control\" type=\"text\" value=\"1\">",
                         '<div><button class="hapusbariskeranjang btn btn-danger"><i class="ri-delete-bin-line"></i> Hapus Baris Ini</button></div>',
                     ]).draw(false);
                 }
+                new AutoNumeric('.hanyaangka', {
+                    decimalPlaces: 0,
+                    digitGroupSeparator: '.',
+                    decimalCharacter: ',',
+                    minimumValue: '0',
+                    modifyValueOnWheel: false,
+                });
                 $("#kode_buku").val("")
                 $("#kode_buku").focus();
             },
@@ -100,8 +92,8 @@ $('#tabel_peminjaman').on('click', '.hapusbariskeranjang', function () {
     }
 });
 function prosessimpanpeminjaman(){
-    if ($("#id_member").val() === "" || $("#nomor_trx").val() === "" || $("#tanggal_trx").val() === ""){
-        return toastr.error("Informasi ID Member, Nomor dan Tanggal Transaksi dibutuhkan dalam sistem. Silahkan isikan formulir tersebut", 'Pesan Kesalahan');
+    if ($("#id_member").val() === "" || $("#tanggal_trx").val() === ""){
+        return toastr.error("Informasi Member dan Tanggal Transaksi dibutuhkan dalam sistem. Silahkan isikan formulir tersebut", 'Pesan Kesalahan');
     }
     if (tablepeminjaman.data().count() == 0){
         return toastr.error("Gagal menyimpan. Dikarenakan tidak ada jumlah buku yang ingin dipunjam. Silahkan masukan 1 barang untuk melanjutkan transaksi", 'Pesan Kesalahan');
@@ -135,15 +127,18 @@ function prosessimpanpeminjaman(){
                     "dataType": 'json',
                     "data": {
                         _token: response.csrf_token,
+                        id_petugas: id_user_login,
                         id_member:$("#id_member").val(),
                         nomor_transaksi:($("#nomor_trx").val() === "" ? "" : $("#nomor_trx").val()),
                         tanggal_transaksi:$("#tanggal_trx").val(),
+                        keterangan:$("#keterangan_trx").val(),
                         data_buku: tableDataJsonPeminjaman,
                     },
                     "complete": function() {
                         $('#btn_simpan_peminjaman_buku').prop("disabled", false);$('#btn_simpan_peminjaman_buku').html('<i class="ri-database-line"></i> Simpan Informasi Peminjaman Buku');
                     },
                     "success": function(response) {
+                        console.log(response)
                         if (response.success == false) {
                             return toastr.error(response.message, 'Pesan Kesalahan Code : ' + response.rc);
                         }
@@ -153,9 +148,10 @@ function prosessimpanpeminjaman(){
                         $("#list_nama_anggota").html("")
                         $("#id_member").val("")
                         $("#nomor_trx").val("")
-                        $("#tanggal_trx").val("")
+                        $("#keterangan_trx").val("")
+                        $("#tanggal_trx").val(moment().format('DD-MM-YYYY'))
                         $("#kode_buku").val("")
-                        $("#kode_buku").focus()
+                        $("#id_member").focus()
         
                     },
                     "error": function(xhr, status, error) {

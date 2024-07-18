@@ -7,19 +7,19 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Daftar Peminjam Di Perpustakaan</h5>
+                        <h5 class="card-title">Daftar Pengembalian Di Perpustakaan</h5>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
                             <div class="input-group mb-2">
                                 <input id="kotak_pencarian" type="text" class="form-control" placeholder="Ketikan / Scan Informasi QRCode, Nama, ID Member, Nama Buku, Kode Buku">
-                                <button id="pencarian_data" class="btn btn-outline-primary"><i class="ri-search-line"></i> Filter Informasi </button>
+                                <button class="btn btn-outline-primary"><i class="ri-search-line"></i> Filter Informasi </button>
                             </div>
                             <div class="d-flex gap-2  float-end">
-                                <a href="{{url('/perpustakaan/tambah_pinjaman_buku')}}"><button id="tambah_informasi_buku" class="btn btn-outline-success"><i class="ri-book-mark-line"></i> Tambah Peminjaman</button></a>
+                                <a href="{{url('/perpustakaan/tambah_pinjaman_buku')}}"><button id="tambah_informasi_buku" class="btn btn-outline-success"><i class="ri-book-mark-line"></i> Tambah Pengembalian</button></a>
                             </div>
                         </div>
-                        <table id="daftar_peminjaman" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%"></table>
+                        <table id="daftar_pengembalian" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%"></table>
                     </div>
                 </div>
             </div>
@@ -79,16 +79,16 @@
                     <div class="card-body p-0">
                         <div class="alert alert-danger border-0 rounded-top rounded-0 m-0 d-flex align-items-center" role="alert">
                             <i data-feather="alert-triangle" class="text-warning me-2 icon-sm"></i>
-                            <div class="flex-grow-1 text-truncate">Total Buku Yang Dipinjam <b><span id="totaljenisbuku"></span></b> Jenis Buku.</div>
+                            <div class="flex-grow-1 text-truncate">Total Buku Yang Dipinjam <b><span id=""></span></b> Berkas.</div>
                             <div class="flex-shrink-0">
-                                <!--<a href="javascript:void(0)" class="text-reset text-decoration-underline"><b>Hapus </b></a>-->
+                                <a href="javascript:void(0)" class="text-reset text-decoration-underline"><b>Hapus semua berkas atas pengguna ini</b></a>
                             </div>
                         </div>
 
                         <div class="row align-items-end">
                             <div class="col-sm-8">
                                 <div class="p-3">
-                                    <p class="fs-16 lh-base">Hai.. <span id="username_detail" class="fw-semibold"></span> ini detail pinjaman siswa</p>
+                                    <p class="fs-16 lh-base">Hai.. <span id="username_detail" class="fw-semibold"></span> ini detail informasi kamu</p>
                                     <p class="fs-16 lh-base">Jika terdapat kesalahan atas informasi yang tertera di bawah ini, silahkan hubungi pribadi informan guna memperbarui informasi yang benar dan akurat</p>
                                 </div>
                             </div>
@@ -105,39 +105,40 @@
                         <table id="tabel_detail_informasi" class="table table-borderless table-hover mb-0">
                             <tbody>
                                 <tr>
-                                    <th class="ps-0" scope="row">NIS Siswa</th>
-                                    <td class="text-muted"><span id="id_siswa"></span></td>
+                                    <th class="ps-0" scope="row">Nama Pengguna</th>
+                                    <td class="text-muted"><span class="username"></span></td>
                                 </tr>
                                 <tr>
-                                    <th class="ps-0" scope="row">Nama Siswa</th>
-                                    <td class="text-muted"><span id="nama_siswa"></span></td>
+                                    <th class="ps-0" scope="row">Alamat Surel</th>
+                                    <td class="text-muted"><span class="surel"></span></td>
                                 </tr>
                                 <tr>
-                                    <th class="ps-0" scope="row">Kontak</th>
-                                    <td class="text-muted"><span id="nomor_telp"></span></td>
+                                    <th class="ps-0" scope="row">Kata Sandi</th>
+                                    <td class="text-muted">Rahasia Dong [<a href="javascript:void(0)" onclick="return toastr.error('Mohon maaf kata sandi tidak bisa diperlihatkan. Privasi pribadi, hanya DocuMess dan pihak terkait yang mengetahui', 'Persan Kesalahan');">Perlihatkan</span>]</td>
                                 </tr>
                                 <tr>
-                                    <th class="ps-0" scope="row">Kelas Siswa</th>
-                                    <td class="text-muted"><span id="kelas"></span></td>
+                                    <th class="ps-0" scope="row">NIK [Nomor Induk Kependudukan]</th>
+                                    <td class="text-muted"><span class="nik"></span></td>
                                 </tr>
                                 <tr>
-                                    <th class="ps-0" scope="row">Tahun Ajaran</th>
-                                    <td class="text-muted"><span id="tahun_ajaran"></span></td>
+                                    <th class="ps-0" scope="row">NIP [Nomor Induk Pegawai]</th>
+                                    <td class="text-muted"><span class="nip"></span></td>
+                                </tr>
+                                <tr>
+                                    <th class="ps-0" scope="row">Nama Lengkap</th>
+                                    <td class="text-muted"><span class="nama_lengkap"></span></td>
+                                </tr>
+                                <tr>
+                                    <th class="ps-0" scope="row">TTL</th>
+                                    <td class="text-muted"><span class="tempat_lahir"></span>, <span class="tanggal_lahir"></span></td>
+                                </tr>
+                                <tr>
+                                    <th class="ps-0" scope="row">Jenis Kelamin</th>
+                                    <td class="text-muted"><span class="jenis_kelamin"></span></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <table id="tabeldetail" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Kode Buku</th>
-                                    <th>Nama Buku</th>
-                                    <th>Dipinjam</th>
-                                    <th>Denda Jika Terlambat</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <table id="tabeldetail" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%"></table>
                     </div>
                 </div>
             </div>
@@ -160,6 +161,19 @@
 <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <style>
 #tabel_detail_informasi > :not(caption) > * > * {padding: 0 0 12px 0;}
+.qrcode-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.qrcode-container canvas {
+    display: block;
+    margin: auto;
+    width: 100%; 
+    height: 100%;
+}
 </style>
 @endsection
 @section('js_load')
@@ -167,9 +181,7 @@
 @endcomponent
 <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<script src="{{ asset('v1/assets/js/vendor/jquery_qrcode/dist/jquery-qrcode.js')}}"></script>
-<script src="{{ asset('v1/assets/js/app/buku_pinjaman.js')}}"></script>
+<script src="{{ asset('v1/assets/js/app/buku_pengembalian.js')}}"></script>
 <script>
 </script>
 @endsection

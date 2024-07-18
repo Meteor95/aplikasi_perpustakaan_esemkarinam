@@ -9,6 +9,7 @@
 <script src="{{ asset('v1/assets/js/plugins.js')}}"></script>
 <script src="{{ asset('v1/assets/js/util/globalfn.js')}}"></script>
 @if($tipe_halaman === "admin")
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
 <script src="{{ asset('v1/assets/js/app.js')}}"></script>
 @endif
 <script>

@@ -14,6 +14,9 @@ class HakAkses extends Model
         'nama_hak_akses',
         'hakakses_json',
     ];
+    public static function globalPengaturan($id_pengaturan_global){
+        return DB::table('tms_pengaturan_global')->where('id_pengaturan', '=', $id_pengaturan_global)->first();
+    }
     public static function getTotalUsersWithHakAkses($req){
         $parameterpencarian = $req->parameter_pencarian;
         return DB::table('users_hakakses')

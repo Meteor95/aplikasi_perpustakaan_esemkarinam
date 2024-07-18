@@ -59,7 +59,7 @@ class Transaksi extends Model
             ->take($perHalaman)
             ->skip($offset)
             ->groupBy('tms_transaksi_buku.nomor_transkasi')
-            ->orderBy('tms_transaksi_buku.id_transaksi')
+            ->orderBy('tms_transaksi_buku.tanggal_peminjaman', 'desc') 
             ->get();
     }
     public static function getBukuWithPeminjamanDetail($req, $perHalaman, $offset){
@@ -69,19 +69,20 @@ class Transaksi extends Model
             ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
             ->join('users_pegawai', 'users_pegawai.id_user', '=', 'tms_transaksi_buku.id_petugas')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
+            ->join('tms_ajaran_kelas', 'tms_ajaran_kelas.id', '=', 'users_siswa.id_kelas')
+            ->join('tms_ajaran_tahun', 'tms_ajaran_tahun.id', '=', 'users_siswa.id_tahun_ajaran')
             ->select(
                 'tms_transaksi_buku.*',
                 'tms_transaksi_buku_detail.*',
                 'users_siswa.*',
                 'users_pegawai.nama_lengkap as nama_lengkap_pegawai',
                 'tms_perpustakaan_buku.*',
-                DB::raw('COUNT(tms_transaksi_buku_detail.id_buku) as totaljenisbuku_dipinjam'),
-                DB::raw('SUM(tms_transaksi_buku_detail.qty_pinjam) as totalbuku_dipinjam'),
+                'tms_ajaran_kelas.*',
+                'tms_ajaran_tahun.*',
             )
             ->where(function ($query) use ($parameterpencarian) {
                 $query->Where('tms_transaksi_buku.nomor_transkasi', '=', $parameterpencarian);
             })
-            ->take(1)
             ->get();
     }
 }

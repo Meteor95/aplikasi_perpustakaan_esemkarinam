@@ -20,9 +20,11 @@ class TransaksiService
             $nota = $prefix.$currentDate.$timestamp;
             $transaksiData[] = [
                 'nomor_transkasi' => $nota,
+                'id_petugas' => $datarequest['id_petugas'],
                 'id_anggota' => $datarequest['id_member'],
                 'tanggal_peminjaman' => Carbon::parse($datarequest['tanggal_transaksi']." ".date('H:i:s'))->format('Y-m-d H:i:s'),
                 'tanggal_pengembalian' => Carbon::parse($datarequest['tanggal_transaksi']." ".date('H:i:s'))->addDays(7)->format('Y-m-d H:i:s'),
+                'keterangan' => $datarequest['keterangan'],
                 'status' => "dipinjam",
             ];
             foreach ($data as $item) {

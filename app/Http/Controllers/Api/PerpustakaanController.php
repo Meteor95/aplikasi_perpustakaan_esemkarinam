@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use App\Models\{Penerbit,Pengarang,Kategori,Laci,Rak,Buku,Transaksi};
+use App\Models\{Penerbit,Pengarang,Kategori,Laci,Rak,Buku,Transaksi,HakAkses};
 use App\Helpers\ResponseHelper;
 use App\Services\TransaksiService;
 
@@ -213,6 +213,14 @@ class PerpustakaanController extends Controller
                 return ResponseHelper::error_validation(__('auth.ino_required_data'), $dynamicAttributes);
             }
             $databuku = json_encode($req->input('data_buku'));
+            $datanya = json_decode($databuku, true);
+            $totaldipinjam = 0;
+            $limitpinjaman = HakAkses::globalPengaturan(2);
+            foreach ($datanya as $item) {
+                $totaldipinjam = $totaldipinjam + $item['total_yang_dipinjam'];
+            }
+            //Log::info($limitpinjaman->nilai." < ".$totaldipinjam);
+            if ($limitpinjaman->nilai <= $totaldipinjam) return ResponseHelper::error_validation("Mohon maaf, maksimal peminjaman hanya ".$limitpinjaman->nilai." buku", []);
             $transaksiservices->addTransaksiPeminjamanBuku($databuku,$data);
             return ResponseHelper::success(__('common.saving_data_ok', ['proses' => __('auth.ino_prosess_saving')]), []);
         } catch (\Throwable $th) {
@@ -220,6 +228,26 @@ class PerpustakaanController extends Controller
         }
     }
     public function listloanofbook(Request $req){
+        try {
+            $nomorHalaman = (int) $req->start / (int)($req->length == 0 ? 1 : $req->length );
+            $perHalaman = (int) $req->length;
+            $offset = $nomorHalaman * $perHalaman; 
+            $peminjam = Transaksi::getBukuWithPeminjaman($req, $perHalaman, $offset);
+            $jumlahdata =  Transaksi::getTotalBukuWithPeminjaman($req)->count();
+            $dynamicAttributes = [
+                'data' => $peminjam,
+                'recordsFiltered' => $jumlahdata,
+                'pages' => [
+                    'limit' => $perHalaman,
+                    'offset' => $offset,
+                ],
+            ];
+            return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Buku ']), $dynamicAttributes);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        }
+    }
+    public function listloanofbookreturn(Request $req){
         try {
             $nomorHalaman = (int) $req->start / (int)($req->length == 0 ? 1 : $req->length );
             $perHalaman = (int) $req->length;

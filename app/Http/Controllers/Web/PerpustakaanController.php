@@ -31,10 +31,18 @@ class PerpustakaanController extends Controller
         $data = $this->buildData($req, 'master_peminjaman','transaksi_pinjam');
         $breadcrumbs = [
             ['url' => '/beranda', 'label' => 'Home'],
-            ['url' => '/perpustakaan/daftar_buku', 'label' => 'Daftar Pinjaman'],
-            ['label' => 'Tabel Pinjaman']
+            ['url' => '/perpustakaan/daftar_buku', 'label' => 'Tabel Pinjaman'],
         ];
         return view('paneladmin.beranda.perpustakaan.daftar_peminjaman', ['data' => $data])->with('breadcrumbs', $breadcrumbs);
+    }
+    public function list_of_return(Request $req)
+    {
+        $data = $this->buildData($req, 'master_peminjaman','transaksi_kembali');
+        $breadcrumbs = [
+            ['url' => '/beranda', 'label' => 'Home'],
+            ['url' => '/perpustakaan/daftar_buku', 'label' => 'Tabel Pengembalian'],
+        ];
+        return view('paneladmin.beranda.perpustakaan.daftar_pengembalian', ['data' => $data])->with('breadcrumbs', $breadcrumbs);
     }
     public function tambah_pinjaman(Request $req)
     {

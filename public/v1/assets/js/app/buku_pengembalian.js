@@ -3,7 +3,7 @@ $(function() {
 });
 function loaddatatables(){
     $.get('/generate-csrf-token', function(response) {
-         let daftar_peminjaman = $("#daftar_peminjaman").DataTable({
+         let daftar_peminjaman = $("#daftar_pengembalian").DataTable({
             language:{
                 "paginate": {
                     "first": '<i class="ri-arrow-go-back-line"></i>', 
@@ -22,7 +22,7 @@ function loaddatatables(){
             bProcessing: true, 
             serverSide: true,
             ajax: {
-                "url": baseurlapi + '/perpustakaan/daftar_peminjam',
+                "url": baseurlapi + '/perpustakaan/daftar_pengembalian',
                 "type": "GET",
                 "beforeSend": function (xhr) { xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem('session_id_browser'));},
                 "data": function (d) {
@@ -129,24 +129,7 @@ function detailinformasi(nomornota){
                 if (response.success == false) {
                     return toastr.error(response.message, 'Pesan Kesalahan Code : ' + response.rc);
                 }
-                $('#id_siswa').html(response.data[0].nis)
-                $('#nama_siswa').html(response.data[0].nama_lengkap)
-                $('#nomor_telp').html(response.data[0].nomor_kontak)
-                $('#kelas').html(response.data[0].nama_kelas)
-                $('#tahun_ajaran').html(response.data[0].keterangan_tahun_ajaran)
-                let totalbaris = 0;
-                $.each(response.data, function(index, item) {
-                    totalbaris = totalbaris + 1;
-                    let row = '<tr>' +
-                                '<td>' + item.id_buku + '</td>' +
-                                '<td>' + item.nama_buku + '</td>' +
-                                '<td>' + item.qty_pinjam + ' Buku</td>' +
-                                '<td>' + item.denda + '</td>' +
-                             '</tr>';
-                    $('#tabeldetail').append(row);
-                });
-                $('#totaljenisbuku').html(totalbaris)
-                $('#tabeldetail').addClass('table table-bordered dt-responsive nowrap table-striped align-middle');
+                console.log(response)
                 $('#informasi_detail_peminjaman').modal('toggle');
             },
             "error": function(xhr, status, error) {
@@ -155,9 +138,3 @@ function detailinformasi(nomornota){
         });
     });
 }
-$('#kotak_pencarian').on('input', debounce(function (e) { 
-    $('#daftar_peminjaman').DataTable().ajax.reload();
-}, 500));
-$('#pencarian_data').on('click', function() {
-    $('#daftar_peminjaman').DataTable().ajax.reload();
-});

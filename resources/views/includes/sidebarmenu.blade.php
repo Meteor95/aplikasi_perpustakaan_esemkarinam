@@ -37,7 +37,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTablesPerpus" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesPerpus">
-                        <i class="ri-book-fill"></i> <span data-key="t-widgets">Master Perpustakaan</span>
+                        <i class="ri-book-fill"></i> <span data-key="t-widgets">Master Buku</span>
                     </a>
                     <div class="collapse menu-dropdown {{($data['menu_utama_aktif'] == "master_perpustakaan" ? "active" : "" )}} {{($data['menu_utama_aktif'] === "master_perpustakaan" ? "show" : "" )}}" id="sidebarTablesPerpus">
                         <ul class="nav nav-sm flex-column">
@@ -47,15 +47,12 @@
                             <li class="nav-item">
                                 <a href="{{url('/perpustakaan/atribut')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "atribut" ? "active" : "" )}}"  data-key="t-basic-tables">Atribut Buku</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{url('/perpustakaan/pengaturan')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "pengaturan" ? "active" : "" )}}"  data-key="t-grid-js">Pengaturan</a>
-                            </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTablesPerpusPinjam" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesPerpusPinjam">
-                        <i class="bx bxs-report"></i> <span data-key="t-widgets">Master Peminjaman</span>
+                        <i class="bx bxs-report"></i> <span data-key="t-widgets">Master Transaksi</span>
                     </a>
                     <div class="collapse menu-dropdown {{($data['menu_utama_aktif'] == "master_peminjaman" ? "active" : "" )}} {{($data['menu_utama_aktif'] === "master_peminjaman" ? "show" : "" )}}" id="sidebarTablesPerpusPinjam">
                         <ul class="nav nav-sm flex-column">
@@ -63,7 +60,7 @@
                                 <a href="{{url('/perpustakaan/daftar_peminjaman')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_pinjam" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pinjaman</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{url('/perpustakaan/tambah_pengembalian_buku')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_kembali" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pengembalian</a>
+                                <a href="{{url('/perpustakaan/daftar_pengembalian')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_kembali" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pengembalian</a>
                             </li>
                         </ul>
                     </div>
@@ -85,7 +82,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTables" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTables">
-                        <i class="ri-folder-user-line"></i> <span data-key="t-tables">Pengaturan Murid</span>
+                        <i class="ri-folder-user-line"></i> <span data-key="t-tables">Pengaturan Siswa</span>
                     </a>
                     <div class="collapse menu-dropdown {{($data['menu_utama_aktif'] == "daftarmurid" ? "active" : "" )}} {{($data['menu_utama_aktif'] === "daftarmurid" ? "show" : "" )}}" id="sidebarTables">
                         <ul class="nav nav-sm flex-column">
