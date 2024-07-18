@@ -135,6 +135,7 @@ function detailinformasi(nomornota){
                 $('#kelas').html(response.data[0].nama_kelas)
                 $('#tahun_ajaran').html(response.data[0].keterangan_tahun_ajaran)
                 let totalbaris = 0;
+                $('#tabeldetail').clear().draw();
                 $.each(response.data, function(index, item) {
                     totalbaris = totalbaris + 1;
                     let row = '<tr>' +
