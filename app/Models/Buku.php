@@ -95,6 +95,8 @@ class Buku extends Model
                 'tms_perpustakaan_buku_penerbit.id as id_penerbit',
                 'tms_perpustakaan_buku_pengarang.id as id_pengarang',
                 'tms_perpustakaan_buku_rak.id as id_rak',
-            )->where('tms_perpustakaan_buku.id', '=', $id_buku)->first();
+            )->where('tms_perpustakaan_buku.id', '=', $id_buku)
+            ->orWhere('tms_perpustakaan_buku.id_buku', '=', $id_buku)
+            ->first();
     }
 }

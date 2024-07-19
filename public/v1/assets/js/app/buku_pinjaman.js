@@ -103,7 +103,7 @@ function loaddatatables(){
                     title: "Aksi",
                     render: function(data, type, row, meta) {
                         if (type === 'display') {
-                            return "<div class=\"d-flex justify-content-between gap-2\"><button id=\"editinformasi"+row.id_user+"\" onclick=\"editinformasi('"+row.username+"','"+row.id_user+"')\" class=\"btn btn-outline-success w-100\"><i class=\"ri-shield-user-line\"></i> Ubah</button ><button id=\"editinformasi"+row.id_user+"\" onclick=\"editinformasi('"+row.username+"','"+row.id_user+"')\" class=\"btn btn-outline-danger w-100\"><i class=\"ri-shield-user-line\"></i> Hapus</button ></div>";
+                            return "<div class=\"d-flex justify-content-between gap-2\"><button id=\"ubahpeminjam"+row.id_transaksi_buku+"\" onclick=\"ubahpeminjaman('"+row.id_transaksi+"','"+row.id_transaksi_buku+"')\" class=\"btn btn-outline-success w-100\"><i class=\"ri-shield-user-line\"></i> Ubah</button><button id=\"deletepeminjaman"+row.id_transaksi_buku+"\" onclick=\"deletepeminjaman('"+row.id_transaksi+"','"+row.id_transaksi_buku+"')\" class=\"btn btn-outline-danger w-100\"><i class=\"ri-shield-user-line\"></i> Hapus</button></div>";
                         }
                         return '';
                     }
@@ -158,9 +158,77 @@ function detailinformasi(nomornota){
         });
     });
 }
+function deletepeminjaman(notapeminjaman,id_transaksi_buku){
+    Swal.fire({
+        html:
+            '<div class="mt-3"><lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f06548,secondary:#f7b84b" style="width:120px;height:120px"></lord-icon><div class="pt-2 fs-15"><h4>Konfirmasi Hapus No Transaksi '+notapeminjaman+'!</h4><p class="text-muted mx-4 mb-0">Informasi mengenai peminjaman ini akan dihapus dan data tidak dapat dikembalikan lagi. Apakah anda yakin ?</p></div></div>',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Simpan Informasi',
+        cancelButtonText: 'Nanti Dulu!!',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#deletepeminjaman'+id_transaksi_buku).prop("disabled",true);$('#deletepeminjaman'+id_transaksi_buku).html('<i class="mdi mdi-spin mdi-cog-outline fs-15"></i> Proses Hapus');
+            $.get('/generate-csrf-token', function(response) {
+                $.ajax({
+                    "url": baseurlapi + "/perpustakaan/hapus_peminjaman",
+                    "type": 'GET',
+                    "beforeSend": function (xhr) { xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem('session_id_browser'));},
+                    "dataType": 'json',
+                    "data": {
+                        _token: response.csrf_token,
+                        notapeminjaman: notapeminjaman,
+                    },
+                    "complete": function() {
+                        $('#deletepeminjaman'+id_transaksi_buku).prop("disabled",false);$('#deletepeminjaman'+id_transaksi_buku).html('<i class=\"ri-shield-user-line\"></i> Hapus');
+                    },
+                    "success": function(response) {
+                        if (response.success == false) {
+                            return toastr.error(response.message, 'Pesan Kesalahan Code : ' + response.rc);
+                        }
+                        toastr.success("Nomor transaksi peminjaman : "+notapeminjaman+" telah dihapus");
+                        $('#daftar_peminjaman').DataTable().ajax.reload();
+                    },
+                    "error": function(xhr, status, error) {
+                        $('#deletepeminjaman'+id_transaksi_buku).prop("disabled",false);$('#deletepeminjaman'+id_transaksi_buku).html('<i class=\"ri-shield-user-line\"></i> Hapus');
+                        toastr.error('Terjadi kesalahan proses PENYIMPANAN INFORMASI PEMINJAMAN. Silahkan hubungi TIM Terkiat. Pesan Kesalahan : ' + xhr.responseJSON.message, 'Pesan REST API Tambah Informasi Buku');
+                    }
+                });
+            });
+        }else{
+            $('#btn_simpan_peminjaman_buku').prop("disabled", false);$('#btn_simpan_peminjaman_buku').html('<i class="ri-database-line"></i> Simpan Informasi Peminjaman Buku');
+        }
+    });
+}
 $('#kotak_pencarian').on('input', debounce(function (e) { 
     $('#daftar_peminjaman').DataTable().ajax.reload();
 }, 500));
 $('#pencarian_data').on('click', function() {
     $('#daftar_peminjaman').DataTable().ajax.reload();
 });
+function ubahpeminjaman(idpeminjaman){
+    $.get('/generate-csrf-token', function(response) {
+        $.ajax({
+            "url": baseurlapi + "/perpustakaan/detail_pinjaman",
+            "type": 'GET',
+            "beforeSend": function (xhr) { xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem('session_id_browser'));},
+            "dataType": 'json',
+            "data": {
+                _token: response.csrf_token,
+                idpeminjaman:idpeminjaman,
+            },
+            "complete": function() {
+            },
+            "success": function(response) {
+                if (response.success == false) {
+                    return toastr.error(response.message, 'Pesan Kesalahan Code : ' + response.rc);
+                }
+                $('#informasi_edit_peminjaman').modal('toggle');
+            },
+            "error": function(xhr, status, error) {
+                toastr.error('Terjadi kesalahan proses PENYIMPANAN INFORMASI PEMINJAMAN. Silahkan hubungi TIM Terkiat. Pesan Kesalahan : ' + xhr.responseJSON.message, 'Pesan REST API Tambah Informasi Buku');
+            }
+        });
+    });  
+}

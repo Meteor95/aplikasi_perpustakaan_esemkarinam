@@ -11,10 +11,13 @@ class Transaksi extends Model
     use HasFactory;
     protected $table = 'tms_transaksi_buku';
     protected $fillable = [
+        'id_transaksi',
         'nomor_transkasi',
         'id_anggota',
+        'id_petugas',
         'tanggal_peminjaman',
         'tanggal_pengembalian',
+        'keterangan',
         'status',
     ];
     public static function getTotalBukuWithPeminjaman($req){
@@ -41,6 +44,7 @@ class Transaksi extends Model
             ->join('users_pegawai', 'users_pegawai.id_user', '=', 'tms_transaksi_buku.id_petugas')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
             ->select(
+                'tms_transaksi_buku.id_transaksi as id_transaksi_buku',
                 'tms_transaksi_buku.*',
                 'tms_transaksi_buku_detail.*',
                 'users_siswa.*',
@@ -62,6 +66,19 @@ class Transaksi extends Model
             ->orderBy('tms_transaksi_buku.tanggal_peminjaman', 'desc') 
             ->get();
     }
+    public static function cekBukuSamaDipinjam($req,$idbuku){
+        return DB::table('tms_transaksi_buku')
+            ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
+            ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
+            ->select(
+                'tms_perpustakaan_buku.*',
+                DB::raw('COUNT(*) AS buku_sama'),
+                DB::raw('DATEDIFF(CURDATE(), tms_transaksi_buku.tanggal_pengembalian) AS keterlambatan_hari')
+            )
+            ->where('tms_transaksi_buku_detail.id_buku', '=', $idbuku)
+            ->where('tms_transaksi_buku.id_anggota', '=', $req->id_member)
+            ->get()->first();
+    }
     public static function getBukuWithPeminjamanDetail($req, $perHalaman, $offset){
         $parameterpencarian = $req->parameter_pencarian;
         return DB::table('tms_transaksi_buku')
@@ -81,8 +98,29 @@ class Transaksi extends Model
                 'tms_ajaran_tahun.*',
             )
             ->where(function ($query) use ($parameterpencarian) {
-                $query->Where('tms_transaksi_buku.nomor_transkasi', '=', $parameterpencarian);
+                $query->Where('tms_transaksi_buku.nomor_transkasi', '=', $parameterpencarian)
+                ->orWhere('tms_transaksi_buku.id_transaksi', '=', $parameterpencarian);
             })
+            ->get();
+    }
+    public static function keranjangPengembalianBuku($req){
+        $parameterpencarian = $req->parameter_pencarian;
+        return DB::table('tms_transaksi_buku')
+            ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
+            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
+            ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
+            ->select(
+                'tms_transaksi_buku.*',
+                'tms_transaksi_buku_detail.*',
+                'users_siswa.*',
+                'tms_perpustakaan_buku.*',
+                DB::raw('DATEDIFF(CURDATE(), tms_transaksi_buku.tanggal_pengembalian) AS keterlambatan_hari')
+            )
+            ->where(function ($query) use ($parameterpencarian) {
+                $query->Where('users_siswa.user_id', '=', $parameterpencarian)
+                ->Where('tms_transaksi_buku_detail.status', '<>', '0');
+            })
+            ->orderBy('tms_transaksi_buku.tanggal_peminjaman', 'desc') 
             ->get();
     }
 }

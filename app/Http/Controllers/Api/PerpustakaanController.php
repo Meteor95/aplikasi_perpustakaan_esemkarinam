@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use App\Models\{Penerbit,Pengarang,Kategori,Laci,Rak,Buku,Transaksi,HakAkses};
+use App\Models\{Penerbit,Pengarang,Kategori,Laci,Rak,Buku,Transaksi,TransaksiDetail,HakAkses};
 use App\Helpers\ResponseHelper;
 use App\Services\TransaksiService;
+use Illuminate\Support\Facades\Log;
 
 class PerpustakaanController extends Controller
 {
@@ -117,6 +118,10 @@ class PerpustakaanController extends Controller
     }
     public function listofbook(Request $req){
         try {
+            if (filter_var($req->pengembalian, FILTER_VALIDATE_BOOLEAN)){
+                $buku_sama = Transaksi::cekBukuSamaDipinjam($req,$req->id_buku);
+                if ($buku_sama->buku_sama == 0) return ResponseHelper::error_validation("Nama Buku : ".$buku_sama->nama_buku." tidak ditemukan. Pastikan siswa meminjam buku yang benar.", []);
+            }
             if (filter_var($req->detailbuku, FILTER_VALIDATE_BOOLEAN)){
                 $buku = Buku::detailOneBookDetail($req->id_buku);
                 $dynamicAttributes = [ 'data' => $buku];
@@ -218,9 +223,10 @@ class PerpustakaanController extends Controller
             $limitpinjaman = HakAkses::globalPengaturan(2);
             foreach ($datanya as $item) {
                 $totaldipinjam = $totaldipinjam + $item['total_yang_dipinjam'];
+                $buku_sama = Transaksi::cekBukuSamaDipinjam($req,$item['id_buku']);
+                if ($buku_sama->buku_sama > 0) return ResponseHelper::error_validation("Nama Buku : ".$buku_sama->nama_buku." tidak dapat dipijam dikarenakan anda belum mengembalikan buku yang sama.", []);
             }
-            //Log::info($limitpinjaman->nilai." < ".$totaldipinjam);
-            if ($limitpinjaman->nilai <= $totaldipinjam) return ResponseHelper::error_validation("Mohon maaf, maksimal peminjaman hanya ".$limitpinjaman->nilai." buku", []);
+            if ($limitpinjaman->nilai < $totaldipinjam) return ResponseHelper::error_validation("Mohon maaf, maksimal peminjaman hanya ".$limitpinjaman->nilai." buku", []);
             $transaksiservices->addTransaksiPeminjamanBuku($databuku,$data);
             return ResponseHelper::success(__('common.saving_data_ok', ['proses' => __('auth.ino_prosess_saving')]), []);
         } catch (\Throwable $th) {
@@ -277,6 +283,27 @@ class PerpustakaanController extends Controller
                 'data' => $peminjam,
             ];
             return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Peminjam ']), $dynamicAttributes);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        }
+    }
+    public function hapus_peminjaman(TransaksiService $transaksiservices,Request $req){
+        try {
+            $transaksiservices->hapusTranskasiPeminjaman($req);
+            return ResponseHelper::success(__('data.ino_success_delete', ['namadata' => "Hapus Transaksi Peminjaman"]));
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        } 
+    }
+    public function ambilpeminjaman(Request $req){
+        try {
+            $buku = Transaksi::keranjangPengembalianBuku($req);
+            $dynamicAttributes = [ 'data' => $buku];
+            if (empty($buku)) {
+                return ResponseHelper::data_not_found(__('Informasi data tidak ditemukan. Silahkan cek lagi parameter pencarian'));
+            } else {
+                return ResponseHelper::data(__('common.data_ready', ['namadata' => 'Buku ']), $dynamicAttributes);
+            }
         } catch (\Throwable $th) {
             return ResponseHelper::error($th);
         }

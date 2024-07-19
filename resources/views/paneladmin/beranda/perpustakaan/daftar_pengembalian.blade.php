@@ -16,7 +16,7 @@
                                 <button class="btn btn-outline-primary"><i class="ri-search-line"></i> Filter Informasi </button>
                             </div>
                             <div class="d-flex gap-2  float-end">
-                                <a href="{{url('/perpustakaan/tambah_pinjaman_buku')}}"><button id="tambah_informasi_buku" class="btn btn-outline-success"><i class="ri-book-mark-line"></i> Tambah Pengembalian</button></a>
+                                <a href="{{url('/perpustakaan/tambah_pengembalian_buku')}}"><button id="tambah_informasi_buku" class="btn btn-outline-success"><i class="ri-book-mark-line"></i> Tambah Pengembalian</button></a>
                             </div>
                         </div>
                         <table id="daftar_pengembalian" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%"></table>

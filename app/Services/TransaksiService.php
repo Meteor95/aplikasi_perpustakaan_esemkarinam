@@ -35,10 +35,19 @@ class TransaksiService
                     'qty_pinjam' => $item['total_yang_dipinjam'],
                     'denda' => $informasibuku->denda,
                     'keterangan' => "",
+                    'dikembalikan' => "0",
+                    'status' => "1",
                 ];
             }
             Transaksi::insert($transaksiData);
             TransaksiDetail::insert($transaksiDetailData);
+        });
+    }
+    public function hapusTranskasiPeminjaman($req)
+    {
+        return DB::transaction(function() use ($req) {
+            DB::table('tms_transaksi_buku')->where('nomor_transkasi', '=', $req->notapeminjaman)->delete();
+            DB::table('tms_transaksi_buku_detail')->where('id_transaksi', '=', $req->notapeminjaman)->delete();
         });
     }
 }

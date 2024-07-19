@@ -40,9 +40,9 @@ function prosestambahkeranjang(){
                 let found = false;
                 for (let i = 0; i < data.length; i++) {
                     if (data[i][0] == response.data.id_buku) {
-                        let qtyInput = $(tablepeminjaman.row(i).node()).find('input.qty');
-                        let currentQty = parseInt(qtyInput.val()) || 0; 
-                        qtyInput.val(currentQty + 1); 
+                        let autoNumericInstance = AutoNumeric.getAutoNumericElement("#baris" + response.data.id_buku);
+                        let currentQty = autoNumericInstance.getNumber() || 0;
+                        autoNumericInstance.set(currentQty + 1);
                         found = true;
                         break;
                     }
@@ -56,17 +56,19 @@ function prosestambahkeranjang(){
                         "Lokasi Laci : " + response.data.nama_laci + "<br>" +
                         "Lokasi Rak : " + response.data.nama_rak,
                         response.data.nama_kategori,
-                        "<input name=\"bonusitem[]\" class=\"qty hanyaangka form-control\" type=\"text\" value=\"1\">",
+                        "<input id=\"baris"+response.data.id_buku+"\" name=\"bonusitem[]\" class=\"qty hanyaangka form-control\" type=\"text\" value=\"1\">",
                         '<div><button class="hapusbariskeranjang btn btn-danger"><i class="ri-delete-bin-line"></i> Hapus Baris Ini</button></div>',
                     ]).draw(false);
                 }
-                new AutoNumeric('.hanyaangka', {
-                    decimalPlaces: 0,
-                    digitGroupSeparator: '.',
-                    decimalCharacter: ',',
-                    minimumValue: '0',
-                    modifyValueOnWheel: false,
-                });
+                if (!AutoNumeric.getAutoNumericElement("#baris" + response.data.id_buku)) {
+                    new AutoNumeric("#baris" + response.data.id_buku, {
+                        decimalPlaces: 0,
+                        digitGroupSeparator: '.',
+                        decimalCharacter: ',',
+                        minimumValue: '0',
+                        modifyValueOnWheel: false,
+                    });
+                }
                 $("#kode_buku").val("")
                 $("#kode_buku").focus();
             },
@@ -160,6 +162,8 @@ function prosessimpanpeminjaman(){
                     }
                 });
             });
+        }else{
+            $('#btn_simpan_peminjaman_buku').prop("disabled", false);$('#btn_simpan_peminjaman_buku').html('<i class="ri-database-line"></i> Simpan Informasi Peminjaman Buku');
         }
     });
 }
