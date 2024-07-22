@@ -118,10 +118,6 @@ class PerpustakaanController extends Controller
     }
     public function listofbook(Request $req){
         try {
-            if (filter_var($req->pengembalian, FILTER_VALIDATE_BOOLEAN)){
-                $buku_sama = Transaksi::cekBukuSamaDipinjam($req,$req->id_buku);
-                if ($buku_sama->buku_sama == 0) return ResponseHelper::error_validation("Nama Buku : ".$buku_sama->nama_buku." tidak ditemukan. Pastikan siswa meminjam buku yang benar.", []);
-            }
             if (filter_var($req->detailbuku, FILTER_VALIDATE_BOOLEAN)){
                 $buku = Buku::detailOneBookDetail($req->id_buku);
                 $dynamicAttributes = [ 'data' => $buku];
@@ -295,9 +291,34 @@ class PerpustakaanController extends Controller
             return ResponseHelper::error($th);
         } 
     }
+    public function proses_pengembalian(TransaksiService $transaksiservices,Request $req){
+        try {
+            $data = $req->all();
+            $validator = Validator::make($data, [
+                'data_buku' => 'required',
+            ]);
+            if ($validator->fails()) {
+                $dynamicAttributes = ['errors' => $validator->errors()];
+                return ResponseHelper::error_validation(__('auth.ino_required_data'), $dynamicAttributes);
+            }
+            $databuku = json_encode($req->input('data_buku'));
+            $transaksiservices->addTransaksiPengembalianBuku($databuku,$data);
+            return ResponseHelper::success(__('common.saving_data_ok', ['proses' => __('auth.ino_prosess_saving')]), []);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        }
+    }
     public function ambilpeminjaman(Request $req){
         try {
-            $buku = Transaksi::keranjangPengembalianBuku($req);
+            if (filter_var($req->pengembalian, FILTER_VALIDATE_BOOLEAN)){
+                $buku_sama = Transaksi::cekBukuSamaDipinjam($req,$req->id_buku);
+                if ($buku_sama->buku_sama == 0) return ResponseHelper::error_validation("Nama Buku : ".$buku_sama->nama_buku." tidak ditemukan. Pastikan siswa meminjam buku yang benar.", []);
+            }
+            if (filter_var($req->pengembalian, FILTER_VALIDATE_BOOLEAN)){
+                $buku = Transaksi::keranjangPengembalianBukuCek($req,$req->id_buku);
+            }else{
+                $buku = Transaksi::keranjangPengembalianBuku($req);
+            }
             $dynamicAttributes = [ 'data' => $buku];
             if (empty($buku)) {
                 return ResponseHelper::data_not_found(__('Informasi data tidak ditemukan. Silahkan cek lagi parameter pencarian'));

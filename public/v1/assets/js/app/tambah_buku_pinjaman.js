@@ -195,7 +195,7 @@ $('#id_member').keyup(function(e){
                         $("#list_nama_anggota").html("")
                         return toastr.error("Informasi yang ada cari tidak ditemukan. Silahkan cek lagi NIS atau NISN dari siswa tersebut", 'Pesan Kesalahan Code : 404');
                     }
-                    $("#list_nis_anggota").html(response.data[0].nisn)
+                    $("#list_nis_anggota").html(response.data[0].nis)
                     $("#list_nama_anggota").html(response.data[0].nama_lengkap)
                 },
                 "error": function(xhr, status, error) {

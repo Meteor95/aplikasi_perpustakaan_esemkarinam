@@ -70,13 +70,13 @@ class Transaksi extends Model
         return DB::table('tms_transaksi_buku')
             ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
+            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
             ->select(
                 'tms_perpustakaan_buku.*',
                 DB::raw('COUNT(*) AS buku_sama'),
-                DB::raw('DATEDIFF(CURDATE(), tms_transaksi_buku.tanggal_pengembalian) AS keterlambatan_hari')
             )
             ->where('tms_transaksi_buku_detail.id_buku', '=', $idbuku)
-            ->where('tms_transaksi_buku.id_anggota', '=', $req->id_member)
+            ->where('users_siswa.nis', '=', $req->id_member)
             ->get()->first();
     }
     public static function getBukuWithPeminjamanDetail($req, $perHalaman, $offset){
@@ -117,10 +117,29 @@ class Transaksi extends Model
                 DB::raw('DATEDIFF(CURDATE(), tms_transaksi_buku.tanggal_pengembalian) AS keterlambatan_hari')
             )
             ->where(function ($query) use ($parameterpencarian) {
-                $query->Where('users_siswa.user_id', '=', $parameterpencarian)
-                ->Where('tms_transaksi_buku_detail.status', '<>', '0');
+                $query->where(function ($subQuery) use ($parameterpencarian) {
+                    $subQuery->where('users_siswa.user_id', '=', $parameterpencarian)
+                             ->orWhere('users_siswa.nis', '=', $parameterpencarian);
+                })
+                ->where('tms_transaksi_buku_detail.status', '<>', '0');
             })
             ->orderBy('tms_transaksi_buku.tanggal_peminjaman', 'desc') 
             ->get();
+    }
+    public static function keranjangPengembalianBukuCek($req,$idbuku){
+        return DB::table('tms_transaksi_buku')
+            ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
+            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
+            ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
+            ->select(
+                'tms_transaksi_buku.*',
+                'tms_transaksi_buku_detail.*',
+                'users_siswa.*',
+                'tms_perpustakaan_buku.*',
+                DB::raw('DATEDIFF(CURDATE(), tms_transaksi_buku.tanggal_pengembalian) AS keterlambatan_hari')
+            )
+            ->where('tms_transaksi_buku_detail.id_buku', '=', $idbuku)
+            ->where('users_siswa.nis', '=', $req->id_member)
+            ->get()->first();
     }
 }

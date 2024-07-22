@@ -20,7 +20,7 @@
                         </div>
                         <div class="row mb-1">
                             <div class="col-lg-3 mt-2">
-                                <label for="id_member" class="form-label">NIS, NISN atau ID Anggota Perpustakaan</label>
+                                <label for="id_member" class="form-label">NIS Anggota Perpustakaan</label>
                             </div>
                             <div class="col-lg-9">
                                 <input required type="text" class="form-control" id="id_member" placeholder="Masukan ID Member Perpustakaan">

@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <div class="row mb-1">
                             <div class="col-lg-3 mt-2">
-                                <label for="id_member" class="form-label">NIS, NISN atau ID Anggota Perpustakaan</label>
+                                <label for="id_member" class="form-label">NIS Anggota Perpustakaan</label>
                             </div>
                             <div class="col-lg-9">
                                 <input required type="text" class="form-control" id="id_member" placeholder="Masukan ID Member Perpustakaan">
@@ -55,18 +55,20 @@
                                 <table id="tabel_keranjang_pengembalian" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                                 <thead>
                                     <tr>
-                                    <th>Informasi Buku</th>
-                                    <th>Waktu Transaksi</th>
-                                    <th>Besaran Denda</th>
-                                    <th>Dikembalikan</th>
-                                    <th>Aksi</th>
+                                        <th>Kode Buku</th>
+                                        <th>Informasi Buku</th>
+                                        <th>Waktu Transaksi</th>
+                                        <th>Lama Kembali</th>
+                                        <th>Besaran Denda</th>
+                                        <th>Dikembalikan</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                                 </table>
                                 <div class="d-flex gap-2">
-                                    <button id="btn_simpan_pengembalian_buku" class="w-100 btn btn-outline-primary"><i class="ri-database-line"></i> Simpan Informasi Peminjaman Buku</button>
+                                    <button id="btn_simpan_pengembalian_buku" class="w-100 btn btn-outline-primary"><i class="ri-database-line"></i> Simpan Informasi Pengembalian Buku</button>
                                 </div>
                             </div>
                             <div class="tab-pane" id="base-justified-messages" role="tabpanel">
