@@ -10,7 +10,7 @@
                         <h5 class="card-title">Daftar Peminjam Di Perpustakaan</h5>
                     </div>
                     <div class="card-body">
-                        <video id="preview"></video>
+                        <div id="reader" width="600px"></div>
                         <div class="container mt-1 mb-1"><div class="row"><div class="col"><div class="line-with-text">Daftar Keranjang Peminjaman Buku</div></div></div></div>
                         <div class="col-lg-12 mb-1">
                             <div class="input-group">
@@ -74,22 +74,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script src="{{ asset('v1/assets/js/app/tambah_buku_pinjaman.js')}}"></script>
 <script type="text/javascript">
-    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-    scanner.addListener('scan', function (content) {
-        alert(content)
-        console.log(content);
-    });
-    Instascan.Camera.getCameras().then(function (cameras) {
-      if (cameras.length > 0) {
-        scanner.start(cameras[0]);
-      } else {
-        console.error('No cameras found.');
-      }
-    }).catch(function (e) {
-      console.error(e);
-    });
+function onScanSuccess(decodedText, decodedResult) {
+  // handle the scanned code as you like, for example:
+  console.log(`Code matched = ${decodedText}`, decodedResult);
+}
+
+function onScanFailure(error) {
+  // handle scan failure, usually better to ignore and keep scanning.
+  // for example:
+  console.warn(`Code scan error = ${error}`);
+}
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+  "reader",
+  { fps: 64, qrbox: {width: 600, height: 600} },
+  /* verbose= */ false);
+html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 </script>
 @endsection
