@@ -210,7 +210,13 @@ function simpanpengembalian(){
                         if (response.success == false) {
                             return toastr.error(response.message, 'Pesan Kesalahan Code : ' + response.rc);
                         }
-                        toastr.success("Informasi peminjaman sudah berhasil di rekam pada database dengan Nama Peminjam : "+$("#list_nama_anggota").html());        
+                        toastr.success("Informasi peminjaman sudah berhasil di rekam pada database dengan Nama Peminjam : "+$("#list_nama_anggota").html());
+                        tabel_keranjang_pengembalian.clear().draw();
+                        tabelpengembalian.clear().draw();
+                        $('#tanggal_trx').val(moment().format('DD-MM-YYYY'));
+                        $("#list_nis_anggota").html("")
+                        $("#list_nama_anggota").html("")
+                        $('#kode_buku').val()
                     },
                     "error": function(xhr, status, error) {
                         $('#btn_simpan_pengembalian_buku').prop("disabled", false);$('#btn_simpan_pengembalian_buku').html('<i class="ri-database-line"></i> Simpan Informasi Peminjaman Buku');

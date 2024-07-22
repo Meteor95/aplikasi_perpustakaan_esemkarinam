@@ -62,6 +62,9 @@
                             <li class="nav-item">
                                 <a href="{{url('/perpustakaan/daftar_pengembalian')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_kembali" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pengembalian</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{url('/murid/pinjam_buku')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "pinjam_buku" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pengembalian</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

@@ -52,6 +52,15 @@ class StudentsController extends Controller
         ];
         return view('paneladmin.beranda.murid.kelas_konten', ['data' => $data])->with('breadcrumbs', $breadcrumbs);
     }
+    public function siswa_pinjam(Request $req){
+        $data = $this->buildData($req, 'daftarmurid','kelas');
+        $breadcrumbs = [
+            ['url' => '/beranda', 'label' => 'Home'],
+            ['url' => '/murid/subbukuinduk', 'label' => 'Daftar Kelas'],
+            ['label' => 'Tabel Kelas']
+        ];
+        return view('paneladmin.beranda.murid.kelas_konten', ['data' => $data])->with('breadcrumbs', $breadcrumbs);
+    }
     public function web_logout(Request $req)
     {
         \Cookie::queue(Cookie::forget('CookieID'));
