@@ -13,7 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(ForceSSL::class);
         $middleware->append(\Illuminate\Session\Middleware\StartSession::class);
         $middleware->validateCsrfTokens(except: [
             '/generate-csrf-token',
