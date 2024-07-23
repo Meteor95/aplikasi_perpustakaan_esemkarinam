@@ -11,6 +11,7 @@
                     </div>
                     <div class="card-body">
                         <video width="100%" id="preview"></video>
+                        <div class="row" id="camera-buttons"></div>
                         <div class="container mt-1 mb-1"><div class="row"><div class="col"><div class="line-with-text">Daftar Keranjang Peminjaman Buku</div></div></div></div>
                         <div class="col-lg-12 mb-1">
                             <div class="input-group">

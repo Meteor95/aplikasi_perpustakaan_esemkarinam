@@ -13,17 +13,41 @@ $(function() {
     $('#tanggal_trx').val(moment().format('DD-MM-YYYY'));
 });
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-scanner.addListener('scan', function (content) {
-    prosestambahkeranjang(content)
+scanner.addListener('scan', function(content) {
+    prosestambahkeranjang(content);
 });
-Instascan.Camera.getCameras().then(function (cameras) {
-  if (cameras.length > 0) {
-    scanner.start(cameras[1]);
-  } else {
-    console.error('No cameras found.');
-  }
-}).catch(function (e) {
-  console.error(e);
+
+let cameras = [];
+
+Instascan.Camera.getCameras().then(function(camList) {
+    if (camList.length > 0) {
+        let cameras = camList;
+        let cameraButtonsContainer = document.getElementById('camera-buttons');
+        cameras.forEach((camera, index) => {
+            let button = document.createElement('button');
+            button.className = 'btn btn-outline-success';
+            button.innerHTML = camera.name || `Camera ${index + 1}`;
+            button.style.width = '100%';
+            button.addEventListener('click', function() {
+                scanner.start(camera);
+            });
+            let col = document.createElement('div');
+            col.className = 'col-12 col-md-6';
+            col.appendChild(button);
+             cameraButtonsContainer.appendChild(col);
+        });
+        scanner.start(cameras[0]);
+    } else {
+        console.error('No cameras found.');
+    }
+}).catch(function(e) {
+    console.error(e);
+});
+$('#tambah_ke_keranjang').on('click', function() {
+    prosestambahkeranjang($('#kode_buku').val());
+});
+$('#kode_buku').keyup(function(e){
+    if(e.keyCode == 13){prosestambahkeranjang($('#kode_buku').val());}
 });
 function prosestambahkeranjang(kodeitem){
     $('#tambah_ke_keranjang').prop("disabled", true);$('#tambah_ke_keranjang').html('<i class="ri-file-add-line align-middle"></i> Keranjang');
@@ -79,6 +103,7 @@ function prosestambahkeranjang(kodeitem){
                         modifyValueOnWheel: false,
                     });
                 }
+                $('#kode_buku').val("");
             },
             "error": function(xhr, status, error) {
                 $('#tambah_ke_keranjang').prop("disabled", false);$('#tambah_ke_keranjang').html('<i class="ri-file-add-line align-middle"></i> Keranjang');
@@ -131,22 +156,21 @@ function prosessimpanpeminjaman(){
                     "dataType": 'json',
                     "data": {
                         _token: response.csrf_token,
-                        id_petugas: id_user_login,
-                        id_member:$("#id_member").val(),
+                        id_petugas:1,
+                        id_member:id_user_login,
                         nomor_transaksi:($("#nomor_trx").val() === "" ? "" : $("#nomor_trx").val()),
-                        tanggal_transaksi:$("#tanggal_trx").val(),
-                        keterangan:$("#keterangan_trx").val(),
+                        tanggal_transaksi:moment().format('DD-MM-YYYY'),
+                        keterangan:"Siswa Meminjam",
                         data_buku: tableDataJsonPeminjaman,
                     },
                     "complete": function() {
                         $('#btn_simpan_peminjaman_buku').prop("disabled", false);$('#btn_simpan_peminjaman_buku').html('<i class="ri-database-line"></i> Simpan Informasi Peminjaman Buku');
                     },
                     "success": function(response) {
-                        console.log(response)
                         if (response.success == false) {
                             return toastr.error(response.message, 'Pesan Kesalahan Code : ' + response.rc);
                         }
-                        toastr.success("Informasi peminjaman sudah berhasil di rekam pada database dengan Nama Peminjam : "+$("#list_nama_anggota").html());
+                        toastr.success("Informasi peminjaman sudah berhasil di rekam pada database");
                         tablepeminjaman.clear().draw();
                         $("#list_nis_anggota").html("")
                         $("#list_nama_anggota").html("")
@@ -171,40 +195,4 @@ function prosessimpanpeminjaman(){
 }
 $('#btn_simpan_peminjaman_buku').on('click', function() {
     prosessimpanpeminjaman();
-});
-$('#id_member').keyup(function(e){
-    if(e.keyCode == 13){
-        $('#btn_aktifkan_camera').prop("disabled", true);$('#btn_aktifkan_camera').html('<i class="ri-file-add-line align-middle"></i> Proses Pencairan Informasi');
-        $.get('/generate-csrf-token', function(response) {
-            $.ajax({
-                "url": baseurlapi + '/murid/ajaxtabelmurid',
-                "type": 'GET',
-                "beforeSend": function (xhr) { xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem('session_id_browser'));},
-                "dataType": 'json',
-                "data": {
-                    _token: response.csrf_token,
-                    parameter_pencarian: $("#id_member").val(),
-                    detail: true,
-                    length:1,
-                    start:0,
-                },
-                "complete": function() {
-                    $('#btn_aktifkan_camera').prop("disabled", false);$('#btn_aktifkan_camera').html('<i class="ri-qr-code-fill"></i> Scan Kartu Anggota');
-                },
-                "success": function(response) {
-                    if (response.recordsFiltered == 0) {
-                        $("#list_nis_anggota").html("")
-                        $("#list_nama_anggota").html("")
-                        return toastr.error("Informasi yang ada cari tidak ditemukan. Silahkan cek lagi NIS atau NISN dari siswa tersebut", 'Pesan Kesalahan Code : 404');
-                    }
-                    $("#list_nis_anggota").html(response.data[0].nis)
-                    $("#list_nama_anggota").html(response.data[0].nama_lengkap)
-                },
-                "error": function(xhr, status, error) {
-                    $('#btn_aktifkan_camera').prop("disabled", false);$('#btn_aktifkan_camera').html('<i class="ri-qr-code-fill"></i> Scan Kartu Anggota');
-                    toastr.error('Terjadi kesalahan proses PEMBACAAN INFORMASI PEMINJAMAN. Silahkan hubungi TIM Terkiat. Pesan Kesalahan : ' + xhr.responseJSON.message, 'Pesan REST API');
-                }
-            });
-        });
-    }
 });

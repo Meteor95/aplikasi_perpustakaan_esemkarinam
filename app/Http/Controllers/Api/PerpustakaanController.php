@@ -329,4 +329,28 @@ class PerpustakaanController extends Controller
             return ResponseHelper::error($th);
         }
     }
+    public function verifikasipeminjaman(Request $req){
+        try {
+            $nomor_transkasi = $req->input('nomor_transkasi');
+            $kodebuku = $req->input('kodebuku');
+            $statuspeminjaman = $req->input('statuspeminjaman');
+            $statusnya = "";
+        
+            if ($statuspeminjaman == "terima") {
+                $statusnya = "SETUJUI";
+            } else if ($statuspeminjaman == "tolak") {
+                $statusnya = "TOLAK";    
+            }
+            TransaksiDetail::where('id_transaksi', $nomor_transkasi)
+                ->where(function ($query) use ($kodebuku) {
+                    $query->where('id_buku', $kodebuku);
+                })
+                ->update(['approval_status' => $statusnya]);
+        
+            return ResponseHelper::success("Informasi konfirmasi berhasil diubah ke dalam status " . $statusnya, []);
+        } catch (\Throwable $th) {
+            return ResponseHelper::error($th);
+        }
+        
+    }
 }

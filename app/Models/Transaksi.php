@@ -19,6 +19,7 @@ class Transaksi extends Model
         'tanggal_pengembalian',
         'keterangan',
         'status',
+        'approval_status',
     ];
     public static function getTotalBukuWithPeminjaman($req){
         $parameterpencarian = $req->parameter_pencarian;

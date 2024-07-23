@@ -235,14 +235,31 @@ scanner.addListener('scan', function (content) {
     $("#id_buku").val(content)
     $("#nomor_buku").focus()
 });
-Instascan.Camera.getCameras().then(function (cameras) {
-  if (cameras.length > 0) {
-    scanner.start(cameras[0]);
-  } else {
-    console.error('No cameras found.');
-  }
-}).catch(function (e) {
-  console.error(e);
+let cameras = [];
+
+Instascan.Camera.getCameras().then(function(camList) {
+    if (camList.length > 0) {
+        let cameras = camList;
+        let cameraButtonsContainer = document.getElementById('camera-buttons');
+        cameras.forEach((camera, index) => {
+            let button = document.createElement('button');
+            button.className = 'btn btn-outline-success';
+            button.innerHTML = camera.name || `Camera ${index + 1}`;
+            button.style.width = '100%';
+            button.addEventListener('click', function() {
+                scanner.start(camera);
+            });
+            let col = document.createElement('div');
+            col.className = 'col-12 col-md-6';
+            col.appendChild(button);
+             cameraButtonsContainer.appendChild(col);
+        });
+        scanner.start(cameras[0]);
+    } else {
+        console.error('No cameras found.');
+    }
+}).catch(function(e) {
+    console.error(e);
 });
 $("#simpan_buku").on( "click", function() {
     formtambahbuku.addClass('was-validated')

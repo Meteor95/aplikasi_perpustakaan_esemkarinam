@@ -204,16 +204,17 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            },
+            }/*,
             {
                 title: "Aksi",
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return "<div class=\"d-flex justify-content-between gap-2\"><button id=\"editpenerbit" + row.id + "\" onclick=\"editinformasi('" + row.username + "','" + row.id + "')\" class=\"btn btn-outline-success w-100\"><i class=\"ri-shield-user-line\"></i> Ubah Data</button></div>";
+                        return "<div class=\"d-flex justify-content-between gap-2\"></div>";
+                        //<button id=\"editpenerbit" + row.id + "\" onclick=\"editinformasi('" + row.username + "','" + row.id + "')\" class=\"btn btn-outline-success w-100\"><i class=\"ri-shield-user-line\"></i> Ubah Data</button>
                     }
                     return '';
                 }
-            }
+            }*/
         ];
     }else if(idtabel === "pengarang") {
         columnsConfig = [
@@ -243,7 +244,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            },
+            }/*,
             {
                 title: "Aksi",
                 render: function (data, type, row, meta) {
@@ -252,7 +253,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            }
+            }*/
         ];
     }else if(idtabel === "kategori") {
         columnsConfig = [
@@ -282,7 +283,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            },
+            }/*,,
             {
                 title: "Aksi",
                 render: function (data, type, row, meta) {
@@ -291,7 +292,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            }
+            }*/
         ];
     }else if(idtabel === "laci") {
         columnsConfig = [
@@ -321,7 +322,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            },
+            }/*,,
             {
                 title: "Aksi",
                 render: function (data, type, row, meta) {
@@ -330,7 +331,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            }
+            }*/
         ];
     }else if(idtabel === "rak") {
         columnsConfig = [
@@ -360,7 +361,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            },
+            }/*,,
             {
                 title: "Aksi",
                 render: function (data, type, row, meta) {
@@ -369,7 +370,7 @@ function loaddatatables(idtabel){
                     }
                     return '';
                 }
-            }
+            }*/
         ];
     }
     $.get('/generate-csrf-token', function(response) {

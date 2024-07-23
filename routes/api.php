@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
             Route::get('daftar_pengembalian', [PerpustakaanController::class,"listloanofbookreturn"]); 
             Route::get('hapus_peminjaman', [PerpustakaanController::class,"hapus_peminjaman"]); 
             Route::get('ambilpeminjaman', [PerpustakaanController::class,"ambilpeminjaman"]);
+            Route::post('verifikasipeminjaman', [PerpustakaanController::class,"verifikasipeminjaman"]);
         });
         Route::prefix('pegawai')->group(function () {
             Route::post('pendaftaran', [PegawaiController::class, "addemployed"]);

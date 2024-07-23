@@ -70,16 +70,16 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTablesha" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesha">
-                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Kredential dan Petugas</span>
+                        <i class="ri-honour-line"></i> <span data-key="t-widgets">Pengaturan Pegawai</span>
                     </a>
                     <div class="collapse menu-dropdown {{($data['menu_utama_aktif'] == "kredential_dan_petugas" ? "active" : "" )}} {{($data['menu_utama_aktif'] === "kredential_dan_petugas" ? "show" : "" )}}" id="sidebarTablesha">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{url('/pegawai/daftarpengguna')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "daftar_petugas" ? "active" : "" )}}" data-key="t-basic-tables">Daftar Petugas</a>
                             </li>
-                            <li class="nav-item">
+                            <!--<li class="nav-item">
                                 <a href="{{url('/pegawai/hakakses')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "daftar_permision" ? "active" : "" )}}" data-key="t-basic-tables">Hak Akses</a>
-                            </li>
+                            </li>-->
                         </ul>
                     </div>
                 </li>

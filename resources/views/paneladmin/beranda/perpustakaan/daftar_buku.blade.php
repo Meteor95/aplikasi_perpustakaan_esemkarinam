@@ -51,6 +51,7 @@
             </div>
             <div class="modal-body">
                 <video width="100%" id="preview"></video>
+                <div class="row" id="camera-buttons"></div>
                 <form id="form_pendaftaran_buku" class="needs-validation" novalidate>
                     <div class="row mb-1">
                         <div class="col-lg-3">

@@ -132,7 +132,8 @@
                                     <th>Kode Buku</th>
                                     <th>Nama Buku</th>
                                     <th>Dipinjam</th>
-                                    <th>Denda Jika Terlambat</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
