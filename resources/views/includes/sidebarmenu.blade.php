@@ -66,9 +66,11 @@
                                 <a href="{{url('/perpustakaan/daftar_pengembalian')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_kembali" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pengembalian</a>
                             </li>
                             @endif
+                            @if ($data['userInfo']->id_hakakses == "3")
                             <li class="nav-item">
                                 <a href="{{url('/murid/pinjam_buku')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "siswa_pinjam_buku" ? "active" : "" )}}" data-key="t-basic-tables">Siswa Pinjam Buku Yuk</a>
                             </li>
+                            @endif
                         </ul>
                     </div>
                 </li>
