@@ -156,7 +156,7 @@ function prosessimpanpeminjaman(){
                     "dataType": 'json',
                     "data": {
                         _token: response.csrf_token,
-                        id_petugas:1,
+                        id_petugas:"0",
                         id_member:id_user_login,
                         nomor_transaksi:($("#nomor_trx").val() === "" ? "" : $("#nomor_trx").val()),
                         tanggal_transaksi:moment().format('DD-MM-YYYY'),
