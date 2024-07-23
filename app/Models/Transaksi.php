@@ -72,7 +72,7 @@ class Transaksi extends Model
         return DB::table('tms_transaksi_buku')
             ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
-            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
+            ->join('users_siswa', 'users_siswa.nis', '=', 'tms_transaksi_buku.id_anggota')
             ->select(
                 'tms_perpustakaan_buku.*',
                 DB::raw('COUNT(*) AS buku_sama'),
