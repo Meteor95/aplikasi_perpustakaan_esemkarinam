@@ -129,6 +129,7 @@ function detailinformasi(nomornota){
                 if (response.success == false) {
                     return toastr.error(response.message, 'Pesan Kesalahan Code : ' + response.rc);
                 }
+                $('#judulinformasidetail').html("Informasi Detail Peminjaman "+response.data[0].nomor_transkasi)
                 $('#id_siswa').html(response.data[0].nis)
                 $('#nama_siswa').html(response.data[0].nama_lengkap)
                 $('#nomor_telp').html(response.data[0].nomor_kontak)
