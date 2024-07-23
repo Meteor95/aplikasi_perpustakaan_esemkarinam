@@ -50,6 +50,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
             </div>
             <div class="modal-body">
+                <video width="100%" id="preview"></video>
                 <form id="form_pendaftaran_buku" class="needs-validation" novalidate>
                     <div class="row mb-1">
                         <div class="col-lg-3">
@@ -232,7 +233,7 @@
             </div>
             <div class="modal-footer">
                 <div class="d-flex justify-content-between gap-2">
-                    <button id="hapus_pengguna" class="btn btn-outline-success">Log Arus Buku</button>
+                    <!--<button id="hapus_pengguna" class="btn btn-outline-success">Log Arus Buku</button>-->
                 </div>
             </div>
 
@@ -246,21 +247,16 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <style>#tabel_detail_informasi > :not(caption) > * > * {padding: 0 0 12px 0;}
-.qrcode-container {
+.qrcode {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
-    width: 100%;
     height: 100%;
 }
 
-.qrcode-container canvas {
-    display: block;
+.qrcode canvas {
     margin: auto;
-    width: 100%; 
-    height: 100%;
 }
-
 </style>
 @endsection
 @section('js_load')
@@ -268,6 +264,7 @@
 @endcomponent
 <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script src="{{ asset('v1/assets/js/vendor/jquery_qrcode/dist/jquery-qrcode.js')}}"></script>
 <script src="{{ asset('v1/assets/js/app/buku.js')}}"></script>
 @endsection

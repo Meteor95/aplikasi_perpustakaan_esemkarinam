@@ -152,45 +152,36 @@ $.get('/generate-csrf-token', function(response) {
                 }
             },
             {
-                title: "Informasi Buku",
+                title: "QR Code",
                 render: function(data, type, row, meta) {
                     if (type === 'display') {
-                        return "ID Buku : "+row.id_buku+"<br>"+
-                        "Nomor Buku : "+row.nomor_buku+"<br>"+
-                        "<a href='javascript:void(0)' onclick='detailbuku(" + row.id_buku_id + ")'>Nama Buku: " + row.nama_buku + "</a>";
+                        return '<div class="qrcode" data-id="' + data + '"></div>';
                     }
                     return data;
                 }
-            }, 
+            },
             {
-                title: "Atribut Buku",
+                title: "Informasi Buku",
                 render: function(data, type, row, meta) {
                     if (type === 'display') {
-                        return "Pengarang : "+row.nama_pengarang+"<br>"+
+                        return "<a href='javascript:void(0)' onclick='detailbuku(" + row.id_buku_id + ")'>Nama Buku: " + row.nama_buku + "</a><br>"+ 
+                        "ID Buku : "+row.id_buku+"<br>"+
+                        "Nomor Buku : "+row.nomor_buku+"<br>"+
+                        "Pengarang : "+row.nama_pengarang+"<br>"+
                         "Penerbit : "+row.nama_penerbit+"<br>"+
-                        "Tahun Terbit : "+row.tahun_terbit+"<br>"
-                        ;
+                        "Tahun Terbit : "+row.tahun_terbit+"<br>";
                     }
-                    return '';
+                    return data;
                 }
             },
             {
-                title: "Lokasi",
+                title: "Lokasi dan Stok Tersedia",
                 render: function(data, type, row, meta) {
                     if (type === 'display') {
                         return "Lokasi RAK : "+row.nama_rak+"<br>"+
-                        "Lokasi Laci : "+row.nama_laci+"<br>"
-                        ;
-                    }
-                    return '';
-                }
-            }, 
-            {
-                title: "Status",
-                render: function(data, type, row, meta) {
-                    if (type === 'display') {
-                        return "Total Stok : "+row.stok+"<br>"+
-                        "Status : "+(row.status == 1 ? "Aktif" : "Tidak Aktif")+"<br>"
+                        "Lokasi Laci : "+row.nama_laci+"<br>"+
+                        "Total Stok : "+row.stok+"<br>"+
+                        "Status : "+(row.status == 1 ? "Aktif" : "Tidak Aktif")+"<br>";
                         ;
                     }
                     return '';
@@ -214,6 +205,16 @@ $.get('/generate-csrf-token', function(response) {
                 }
             },
         ],
+        drawCallback: function(settings) {
+            $('.qrcode').empty();
+            let api = this.api();
+            api.rows({ page: 'current' }).every(function(rowIdx, tableLoop, rowLoop) {
+                let data = this.data();
+                let id_buku = data.id_buku;
+                let $qrcode = $(api.row(rowIdx).node()).find('.qrcode');
+                $qrcode.qrcode({text: id_buku});
+            });
+        }
     });
 });
 }
@@ -228,6 +229,20 @@ $(document).on('click', '.toggle-qrcode', function() {
     $("#" + qrCodeId).toggle();
     let buttonText = $(this).text() == 'Show QR Code' ? 'Hide QR Code' : 'Show QR Code';
     $(this).text(buttonText);
+});
+let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+scanner.addListener('scan', function (content) {
+    $("#id_buku").val(content)
+    $("#nomor_buku").focus()
+});
+Instascan.Camera.getCameras().then(function (cameras) {
+  if (cameras.length > 0) {
+    scanner.start(cameras[0]);
+  } else {
+    console.error('No cameras found.');
+  }
+}).catch(function (e) {
+  console.error(e);
 });
 $("#simpan_buku").on( "click", function() {
     formtambahbuku.addClass('was-validated')

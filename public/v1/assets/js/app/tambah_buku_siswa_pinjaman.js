@@ -12,6 +12,19 @@ $(function() {
     })
     $('#tanggal_trx').val(moment().format('DD-MM-YYYY'));
 });
+let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+scanner.addListener('scan', function (content) {
+    prosestambahkeranjang(kodeitem)
+});
+Instascan.Camera.getCameras().then(function (cameras) {
+  if (cameras.length > 0) {
+    scanner.start(cameras[0]);
+  } else {
+    console.error('No cameras found.');
+  }
+}).catch(function (e) {
+  console.error(e);
+});
 function prosestambahkeranjang(kodeitem){
     $('#tambah_ke_keranjang').prop("disabled", true);$('#tambah_ke_keranjang').html('<i class="ri-file-add-line align-middle"></i> Keranjang');
     $.get('/generate-csrf-token', function(response) {
