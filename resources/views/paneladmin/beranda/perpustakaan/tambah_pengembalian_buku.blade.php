@@ -77,7 +77,6 @@
                                     <tr>
                                     <th>Nomor Transaksi</th>
                                     <th>Peminjaman Buku</th>
-                                    <th>Waktu Transaksi</th>
                                     <th>Besaran Denda</th>
                                     <th>Aksi</th>
                                     </tr>
