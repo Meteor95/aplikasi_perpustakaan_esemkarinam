@@ -35,6 +35,7 @@
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Beranda</span>
                     </a>
                 </li>
+                @if ($data['userInfo']->id_hakakses == "1")
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTablesPerpus" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesPerpus">
                         <i class="ri-book-fill"></i> <span data-key="t-widgets">Master Buku</span>
@@ -50,24 +51,28 @@
                         </ul>
                     </div>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTablesPerpusPinjam" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesPerpusPinjam">
                         <i class="bx bxs-report"></i> <span data-key="t-widgets">Master Transaksi</span>
                     </a>
                     <div class="collapse menu-dropdown {{($data['menu_utama_aktif'] == "master_peminjaman" ? "active" : "" )}} {{($data['menu_utama_aktif'] === "master_peminjaman" ? "show" : "" )}}" id="sidebarTablesPerpusPinjam">
                         <ul class="nav nav-sm flex-column">
+                            @if ($data['userInfo']->id_hakakses == "1")
                             <li class="nav-item">
                                 <a href="{{url('/perpustakaan/daftar_peminjaman')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_pinjam" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pinjaman</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{url('/perpustakaan/daftar_pengembalian')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "transaksi_kembali" ? "active" : "" )}}" data-key="t-basic-tables">Transaksi Pengembalian</a>
                             </li>
+                            @endif
                             <li class="nav-item">
                                 <a href="{{url('/murid/pinjam_buku')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "siswa_pinjam_buku" ? "active" : "" )}}" data-key="t-basic-tables">Siswa Pinjam Buku Yuk</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+                @if ($data['userInfo']->id_hakakses == "1")
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarTablesha" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTablesha">
                         <i class="ri-honour-line"></i> <span data-key="t-widgets">Pengaturan Pegawai</span>
@@ -101,6 +106,7 @@
                         </ul>
                     </div>
                 </li>
+                @endif
             </ul>
         </div>
         <!-- Sidebar -->

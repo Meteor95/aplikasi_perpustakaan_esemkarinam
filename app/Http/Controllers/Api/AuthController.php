@@ -59,7 +59,7 @@ class AuthController extends Controller
                 'fitur' => json_decode($user->hakakses_json, true),
             ];
             $cookie1 = Cookie::make('HashCookieUUID', base64_encode(Hash::make($tokenstring)), (60 * 24));
-            $cookie2 = Cookie::make('CookieID', base64_encode($user->id), (60 * 24));
+            $cookie2 = Cookie::make('CookieID', base64_encode($user->id_user_utama), (60 * 24));
             $response = ResponseHelper::success(__('auth.success_login', ['username' => $req->input('username')]), $dynamicAttributes);
             $response->withCookie($cookie1)->withCookie($cookie2);
             return $response;

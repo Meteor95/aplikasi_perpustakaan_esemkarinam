@@ -53,7 +53,11 @@ class User extends Authenticatable
     public static function getUserWithHakAkses($req) {
         $parameterpencarian = $req->input('username');
         return User::join('users_hakakses', 'users.id_hakakses', '=', 'users_hakakses.id')
-            ->where(function ($query) use ($parameterpencarian) {
+            ->select(
+                'users_hakakses.*',
+                'users.*',
+                'users.id as id_user_utama'
+            )->where(function ($query) use ($parameterpencarian) {
                 $query->where('users.username', '=', $parameterpencarian)
                     ->orWhere('email', '=', $parameterpencarian);
             })
