@@ -16,5 +16,5 @@
     var baseurlapi = "{{ url('/api/v1') }}";
     var baseurl = "{{ url('') }}";
     var id_user_login = "{{ isset($data['userInfo']->id) ? $data['userInfo']->id : '0' }}";
-    var id_user_login_siswa = "{{ isset($data['userInfo']->user_id) ? $data['userInfo']->user_id : '0' }}";
+    var id_user_login_siswa = "{{ isset($data['userInfo']->nis) ? $data['userInfo']->nis : '0' }}";
 </script>
