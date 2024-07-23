@@ -25,7 +25,7 @@ class Transaksi extends Model
         $parameterpencarian = $req->parameter_pencarian;
         return DB::table('tms_transaksi_buku')
             ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
-            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
+            ->join('users_siswa', 'users_siswa.nis', '=', 'tms_transaksi_buku.id_anggota')
             ->join('users_pegawai', 'users_pegawai.id_user', '=', 'tms_transaksi_buku.id_petugas')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
             ->where(function ($query) use ($parameterpencarian) {
@@ -85,7 +85,7 @@ class Transaksi extends Model
         $parameterpencarian = $req->parameter_pencarian;
         return DB::table('tms_transaksi_buku')
             ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
-            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
+            ->join('users_siswa', 'users_siswa.nis', '=', 'tms_transaksi_buku.id_anggota')
             ->join('users_pegawai', 'users_pegawai.id_user', '=', 'tms_transaksi_buku.id_petugas')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
             ->join('tms_ajaran_kelas', 'tms_ajaran_kelas.id', '=', 'users_siswa.id_kelas')
@@ -109,7 +109,7 @@ class Transaksi extends Model
         $parameterpencarian = $req->parameter_pencarian;
         return DB::table('tms_transaksi_buku')
             ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
-            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
+            ->join('users_siswa', 'users_siswa.nis', '=', 'tms_transaksi_buku.id_anggota')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
             ->select(
                 'tms_transaksi_buku.*',
@@ -131,7 +131,7 @@ class Transaksi extends Model
     public static function keranjangPengembalianBukuCek($req,$idbuku){
         return DB::table('tms_transaksi_buku')
             ->join('tms_transaksi_buku_detail', 'tms_transaksi_buku_detail.id_transaksi', '=', 'tms_transaksi_buku.nomor_transkasi')
-            ->join('users_siswa', 'users_siswa.user_id', '=', 'tms_transaksi_buku.id_anggota')
+            ->join('users_siswa', 'users_siswa.nis', '=', 'tms_transaksi_buku.id_anggota')
             ->join('tms_perpustakaan_buku', 'tms_perpustakaan_buku.id_buku', '=', 'tms_transaksi_buku_detail.id_buku')
             ->select(
                 'tms_transaksi_buku.*',
