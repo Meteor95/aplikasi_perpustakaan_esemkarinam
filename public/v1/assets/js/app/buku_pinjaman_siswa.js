@@ -98,6 +98,15 @@ function loaddatatables(){
                         }
                         return '';
                     }
+                },
+                {
+                    title: "Aksi",
+                    render: function(data, type, row, meta) {
+                        if (type === 'display') {
+                            return "<div class=\"d-flex justify-content-between gap-2\"><button id=\"detailinformasi"+row.id_user+"\" onclick=\"detailinformasi('"+row.nomor_transkasi+"')\" class=\"btn btn-outline-success w-100\"><i class=\"ri-shield-user-line\"></i> Lihat Detail</button></div>";
+                        }
+                        return '';
+                    }
                 }
             ],
         });
@@ -113,6 +122,8 @@ function detailinformasi(nomornota){
             "data": {
                 _token: response.csrf_token,
                 parameter_pencarian:nomornota,
+                id_siswa:id_user_login_siswa,
+                wheresiswa:true,
             },
             "complete": function() {
             },
@@ -136,8 +147,6 @@ function detailinformasi(nomornota){
                                 '<td>' + item.nama_buku + '</td>' +
                                 '<td>' + item.qty_pinjam + ' Buku</td>' +
                                 '<td>' + item.approval_status + '</td>' +
-                                '<td>' +
-                            '</td>' +
                              '</tr>';
                     $('#tabeldetail').find('tbody').append(row);
                 });

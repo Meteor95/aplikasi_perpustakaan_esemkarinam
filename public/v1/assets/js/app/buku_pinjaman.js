@@ -103,11 +103,11 @@ function loaddatatables(){
                     title: "Aksi",
                     render: function(data, type, row, meta) {
                         if (type === 'display') {
-                            return "<div class=\"d-flex justify-content-between gap-2\"><button id=\"deletepeminjaman"+row.id_transaksi_buku+"\" onclick=\"deletepeminjaman('"+row.id_transaksi+"','"+row.id_transaksi_buku+"')\" class=\"btn btn-outline-danger w-100\"><i class=\"ri-shield-user-line\"></i> Hapus</button></div>";
+                            return "<div class=\"d-flex justify-content-between gap-2\"><button id=\"detailinformasi"+row.id_user+"\" onclick=\"detailinformasi('"+row.nomor_transkasi+"')\" class=\"btn btn-outline-success w-100\"><i class=\"ri-shield-user-line\"></i> Lihat Detail</button><button id=\"deletepeminjaman"+row.id_transaksi_buku+"\" onclick=\"deletepeminjaman('"+row.id_transaksi+"','"+row.id_transaksi_buku+"')\" class=\"btn btn-outline-danger w-100\"><i class=\"ri-shield-user-line\"></i> Hapus</button></div>";
                         }
                         return '';
                     }
-                },
+                }
             ],
         });
     });
