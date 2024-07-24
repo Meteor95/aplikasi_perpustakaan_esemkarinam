@@ -28,6 +28,7 @@ Route::middleware([VerifyIsLogin::class])->group(function () {
         Route::get('tahunajaran', [StudentsController::class,"academicyears"]);
         Route::get('kelas', [StudentsController::class,"studentrooms"]);
         Route::get('pinjam_buku', [PerpustakaanController::class,"pinjam_buku"]);
+        Route::get('daftar_pinjam', [PerpustakaanController::class,"daftar_pinjam"]);
     });
 });
 

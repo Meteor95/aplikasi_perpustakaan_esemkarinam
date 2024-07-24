@@ -83,6 +83,16 @@ class PerpustakaanController extends Controller
         ];
         return view('paneladmin.beranda.perpustakaan.atribut', ['data' => $data])->with('breadcrumbs', $breadcrumbs);
     }
+    public function daftar_pinjam(Request $req)
+    {
+        $data = $this->buildData($req, 'master_peminjaman','siswa_pinjam_buku_daftar');
+        $breadcrumbs = [
+            ['url' => '/beranda', 'label' => 'Home'],
+            ['url' => '/perpustakaan/pengaturan', 'label' => 'Histori Peminjaman'],
+            ['label' => 'Tabel Pengaturan']
+        ];
+        return view('paneladmin.beranda.perpustakaan.daftar_peminjaman_siswa', ['data' => $data])->with('breadcrumbs', $breadcrumbs);
+    }
     public function setting(Request $req)
     {
         $data = $this->buildData($req, 'master_perpustakaan','pengaturan');

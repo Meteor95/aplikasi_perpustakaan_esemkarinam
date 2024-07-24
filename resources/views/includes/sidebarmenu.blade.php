@@ -70,6 +70,9 @@
                             <li class="nav-item">
                                 <a href="{{url('/murid/pinjam_buku')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "siswa_pinjam_buku" ? "active" : "" )}}" data-key="t-basic-tables">Siswa Pinjam Buku Yuk</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{url('/murid/daftar_pinjam')}}" class="nav-link {{($data['sub_menu_utama_aktif'] == "siswa_pinjam_buku_daftar" ? "active" : "" )}}" data-key="t-basic-tables">Histori Peminjaman</a>
+                            </li>
                             @endif
                         </ul>
                     </div>
